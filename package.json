@@ -1,8 +1,9 @@
 {
-  "name": "<%= packageName %>",
-  "description": "<%= description %>",
-  "repository": "https://github.com/<%= githubOrg %>/<%= shortName %>.git",
-  <%= publishInfo %>,
+  "name": "@brightspace-ui-labs/user-feedback",
+  "description": "Elements for acquiring user feedback on our products",
+  "repository": "https://github.com/BrightspaceUILabs/user-feedback.git",
+  "publishConfig": { "access": "public" },
+  "files": [ "user-feedback.js" ],
   "scripts": {
     "lint": "eslint . --ext .js,.html",
     "test": "npm run lint && npm run test:local",
