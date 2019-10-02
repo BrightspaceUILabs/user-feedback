@@ -16,7 +16,8 @@ class UserFeedbackScaleItem extends LitElement {
 			opened: { type: Boolean },
 			hide: { type: Boolean },
 			hideafterclose: { type: Boolean },
-			stopscroll: { type: Boolean }
+			stopscroll: { type: Boolean },
+			buttontext: { type: String, attribute: 'button-text' }
 		};
 	}
 
@@ -226,7 +227,7 @@ class UserFeedbackScaleItem extends LitElement {
 					@click="${this._onButtonClick}"
 				>
 					<d2l-icon icon="tier1:chevron-${direction}"></d2l-icon>
-					<slot name="button-text"></slot>
+					${this.buttontext}
 				</button>
 			</div>`;
 
