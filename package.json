@@ -2,8 +2,18 @@
   "name": "@brightspace-ui-labs/user-feedback",
   "description": "Elements for acquiring user feedback on our products",
   "repository": "https://github.com/BrightspaceUILabs/user-feedback.git",
-  "publishConfig": { "access": "public" },
-  "files": [ "user-feedback.js" ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "user-feedback-container.js",
+    "user-feedback-difficulty-dialog.js",
+    "user-feedback-flyout.js",
+    "user-feedback-launcher.js",
+    "user-feedback-scale-item.js",
+    "user-feedback-scale.js",
+    "user-feedback-text-input.js"
+  ],
   "scripts": {
     "lint": "eslint . --ext .js,.html",
     "test": "npm run lint && npm run test:local",
@@ -13,6 +23,7 @@
   },
   "author": "D2L Corporation",
   "license": "Apache-2.0",
+  "version": "1.0.0",
   "devDependencies": {
     "@polymer/test-fixture": "^4",
     "axe-core": "^3",
@@ -32,6 +43,7 @@
   "dependencies": {
     "@brightspace-ui/core": "^1",
     "@webcomponents/webcomponentsjs": "^2",
-    "lit-element": "^2"
+    "lit-element": "^2",
+    "d2l-inputs": "BrightspaceUI/inputs#semver:^2"
   }
 }
