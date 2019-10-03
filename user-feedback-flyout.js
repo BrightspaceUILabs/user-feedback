@@ -201,12 +201,9 @@ class UserFeedbackScaleItem extends LitElement {
 
 		if (!container) {
 			const toCheckForNested = childrenArray[0];
-			console.log(toCheckForNested);
 			const nestedChildrenArray = getComposedChildren(toCheckForNested);
 			container = this._filterFeedbackContainer(nestedChildrenArray);
 		}
-
-		console.log('container', container);
 
 		if (container && container.clear) {
 			container.clear();
