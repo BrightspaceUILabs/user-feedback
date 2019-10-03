@@ -110,6 +110,10 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 		this._buttonDisabled = !this._getInnerFeedbackComponents().some(x => x.hasAnyContent && x.hasAnyContent());
 	}
 
+	clear() {
+		this._getInnerFeedbackComponents().forEach(x => x.clear && x.clear());
+	}
+
 	_onSubmit() {
 		this._craftResponseObject();
 		this._dispatchSubmitEvent();

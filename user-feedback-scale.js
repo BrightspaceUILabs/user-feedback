@@ -199,6 +199,10 @@ class UserFeedbackScale extends ArrowKeysMixin(LitElement) {
 			}
 		}
 
+		this._updateButtonsCheckedAttribute(selectedIndex);
+	}
+
+	_updateButtonsCheckedAttribute(selectedIndex) {
 		for (let i = 0; i < this._buttons.length; i++) {
 			this._toggleCheckedAttribute(this._buttons[i], i === selectedIndex);
 		}
@@ -226,6 +230,13 @@ class UserFeedbackScale extends ArrowKeysMixin(LitElement) {
 
 	hasAnyContent() {
 		return !!this.selectedText;
+	}
+
+	clear() {
+		this.selectedIndex = undefined;
+		this.selectedValue = undefined;
+		this.selectedText = undefined;
+		this._updateButtonsCheckedAttribute(-1);
 	}
 
 	render() {
