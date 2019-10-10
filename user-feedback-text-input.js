@@ -79,6 +79,16 @@ class UserFeedbackTextInput extends LitElement {
 		return false;
 	}
 
+	clear() {
+		this.value = '';
+		const textArea = this.shadowRoot.querySelector('d2l-input-textarea');
+		textArea.value = '';
+		const scale = this._getInnerFeedbackScale();
+		if (scale) {
+			return scale.clear();
+		}
+	}
+
 	render() {
 		return html`
 			<slot

@@ -5,6 +5,7 @@ import {
 	getNextFocusable,
 	getPreviousFocusable,
 } from '@brightspace-ui/core/helpers/focus';
+import { getComposedChildren } from '@brightspace-ui/core/helpers/dom';
 
 const keyCodes = Object.freeze({
 	ESC: 27
@@ -182,8 +183,36 @@ class UserFeedbackScaleItem extends LitElement {
 		}
 	}
 
+	_filterFeedbackContainer(childrenArray) {
+		const container = (childrenArray.filter(tag => {
+			return tag.nodeName === 'D2L-LABS-USER-FEEDBACK-CONTAINER';
+		}) || [])[0];
+		return container;
+	}
+
+	_getChildrenFromSlot(elem) {
+		if (!elem) { return []; }
+		return getComposedChildren(elem.querySelector('slot'));
+	}
+
+	_clear() {
+		const childrenArray = this._getChildrenFromSlot(this.shadowRoot);
+		let container = this._filterFeedbackContainer(childrenArray);
+
+		if (!container) {
+			const toCheckForNested = childrenArray[0];
+			const nestedChildrenArray = getComposedChildren(toCheckForNested);
+			container = this._filterFeedbackContainer(nestedChildrenArray);
+		}
+
+		if (container && container.clear) {
+			container.clear();
+		}
+	}
+
 	_onCancel() {
 		this._toggleOff();
+		this._clear();
 	}
 
 	_onReject() {
