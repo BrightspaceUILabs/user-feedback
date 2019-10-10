@@ -128,6 +128,7 @@ class UserFeedbackScale extends ArrowKeysMixin(LitElement) {
 	}
 
 	_selectionChanged(e) {
+		this._handleDomChanges();
 		this._updateButtonSelectedAttribute(e.target.index);
 		this.selectedIndex = e.target.index;
 		this.selectedValue = e.target.value;
@@ -205,7 +206,11 @@ class UserFeedbackScale extends ArrowKeysMixin(LitElement) {
 	}
 
 	_toggleCheckedAttribute(button, checked) {
-		button.toggleAttribute('checked', checked);
+		if (checked) {
+			button.setAttribute('checked');
+		} else {
+			button.removeAttribute('checked');
+		}
 		button.setAttribute('aria-checked', checked.toString());
 	}
 
