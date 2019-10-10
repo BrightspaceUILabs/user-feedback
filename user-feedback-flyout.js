@@ -142,7 +142,7 @@ class UserFeedbackScaleItem extends LitElement {
 	}
 
 	focus() {
-		this.shadowRoot.querySelector('input').focus();
+		this.shadowRoot.querySelector('.d2l-labs-user-feedback-scale-item-radio').focus();
 	}
 
 	_handleFocus() {
@@ -157,14 +157,14 @@ class UserFeedbackScaleItem extends LitElement {
 		if (this.stopscroll) {
 			document.body.style.overflow = 'hidden';
 		}
-		this.toggleAttribute('opened', true);
+		this.setAttribute('opened');
 	}
 
 	_toggleOff() {
 		if (this.stopscroll) {
 			document.body.style.overflow = 'auto';
 		}
-		this.toggleAttribute('opened', false);
+		this.removeAttribute('opened');
 		if (this.hide || this.hideafterclose) {
 			const toFocus = getFirstFocusableDescendant(document.body);
 			if (toFocus) {

@@ -55,7 +55,7 @@ class UserFeedbackScaleItem extends LitElement {
 				position: relative;
 			}
 
-			input[type="radio"] {
+			.d2l-labs-user-feedback-scale-item-radio {
 				-webkit-appearance: none;
 				-moz-appearance: none;
 				appearance: none;
@@ -69,12 +69,12 @@ class UserFeedbackScaleItem extends LitElement {
 				outline: none;
 			}
 
-			input[type="radio"]:focus,
-			input[type="radio"]:hover {
+			.d2l-labs-user-feedback-scale-item-radio:focus,
+			.d2l-labs-user-feedback-scale-item-radio:hover {
 				border-color: var(--d2l-color-celestine);
 			}
 
-			input[type="radio"]:checked {
+			.d2l-labs-user-feedback-scale-item-radio[checked] {
 				background: radial-gradient(circle, var(--d2l-color-ferrite) 0%, var(--d2l-color-ferrite) 35%, white 41%, white 100%);
 			}
 
@@ -102,17 +102,18 @@ class UserFeedbackScaleItem extends LitElement {
 		return html`
 			<div class="d2l-labs-user-feedback-scale-item-bg-spacer"></div>
 			<label class="d2l-labs-user-feedback-scale-item-radio-element">
-				<input
-					type="radio"
+				<div
+					class="d2l-labs-user-feedback-scale-item-radio"
 					.name="${this.name}"
-					.checked="${this.checked}"
+					?checked="${this.checked}"
 					.value="${this.value}"
-					@change="${this._handleChange}"
+					@click="${this._handleClick}"
 					@focus="${this._handleFocus}"
 					@blur="${this._handleBlur}"
 					@keypress="${this._handleKeyPress}"
 					tabindex="-1"
-				/>
+					role="radio"
+				></div>
 				<div class="d2l-labs-user-feedback-scale-item-text-area">
 					<slot></slot>
 				</div>
@@ -121,7 +122,14 @@ class UserFeedbackScaleItem extends LitElement {
 	}
 
 	focus() {
-		this.shadowRoot.querySelector('input').focus();
+		this.shadowRoot.querySelector('.d2l-labs-user-feedback-scale-item-radio').focus();
+	}
+
+	_handleClick(e) {
+		this.checked = true;
+		this._handleChange();
+		e.preventDefault();
+		e.stopPropagation();
 	}
 
 	_handleChange() {
