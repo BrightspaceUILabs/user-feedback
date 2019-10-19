@@ -4,6 +4,7 @@ import '@brightspace-ui/core/components/icons/icon';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { getComposedChildren } from '@brightspace-ui/core/helpers/dom';
+import { HmInterface } from './user-feedback-hm-interface.js'
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
 class UserFeedbackContainer extends LocalizeMixin(LitElement) {
@@ -11,8 +12,11 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	static get properties() {
 		return {
 			prompt: { type: String },
+			feedbackVersion: { type: Number },
 			_buttonDisabled: { type: Boolean },
-			_submitted: { type: Boolean }
+			_submitted: { type: Boolean },
+			active: { type: Boolean },
+			_currentState: { type: Object }
 		};
 	}
 
@@ -92,6 +96,29 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	constructor() {
 		super();
 		this._updateButtonDisabled();
+		this._currentState = this.states.enteringFeedback;
+
+		if (this.active) {
+			this.hmInterface = new HmInterface({
+				feedbackApplication: 'portfolio',
+				feedbackType: 'portfolio-instructor-approval',
+				feedbackDomainRoot: 'https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com',
+				getToken: () => {
+					return Promise.resolve('Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjliMTg5ZWJhLWZmNjYtNDM1ZC04OTViLWNjOWI3ZDc3ODUyZCJ9.eyJpc3MiOiJodHRwczovL2FwaS5icmlnaHRzcGFjZS5jb20vYXV0aCIsImF1ZCI6Imh0dHBzOi8vYXBpLmJyaWdodHNwYWNlLmNvbS9hdXRoL3Rva2VuIiwiZXhwIjoxNTcxNDUyNzE1LCJuYmYiOjE1NzE0NDkxMTUsInN1YiI6IjE2OSIsInRlbmFudGlkIjoiOTlkNmM4OGYtM2Y5ZS00NWU2LWI4MDQtOTg4YjFmNjhlNDYzIiwiYXpwIjoibG1zOjk5ZDZjODhmLTNmOWUtNDVlNi1iODA0LTk4OGIxZjY4ZTQ2MyIsInNjb3BlIjoiKjoqOioiLCJqdGkiOiI5ZmJhYjIyMS1hMDg3LTRlYTItOGRiNy1jYmU3MGUzNzA2YmQifQ.IzYgfbrQPyQyObPCOh9sqMLc4dnh3BRTGazYKi31k1JzsVl-ccMkTeLohXoAjodekXiXp7yzeyZYK4R0ArAMiSYh4h7Drz0bY5z-RmOPSKmbJ79fFEAnK3qP8thPaoAOb8KX-D63wpHefU6LtISv5tcZotlkJFEC51kOVdZ72YZBXfuTvML72ELDo8RBou5pTsetl0B7z7t2yU9CKg0y4-l9vj3iKZTgrqAnLFdbPiIIeGo9y4UrPsFufQXlzwd6_W9YP9yjhWD5FIH9FKDVIX-Jv7rI9kZxYBhxm2SdUKxT5evHhIJTmJiJKCJPGxXyuj0USNezA05KdeyUNM03WA  ');
+				}
+			});
+		}
+	}
+
+	get states() {
+		return {
+			enteringFeedback: { name: 'enteringFeedback', render: this._renderFeedbackView },
+			submitting: { name: 'submitting', render: this._renderFeedbackSubmittingView },
+			errorSubmitting: { name: 'errorSubmitting', render: this._renderErrorSubmittingView},
+			// optingOut: 'optingOut',
+			// errorOptingOut: 'errorOptingOut',
+			submitted: { name: 'submitted', render: this._renderFeedbackSubmittedView }
+		};
 	}
 
 	_isFeedbackComponent(tag) {
@@ -114,22 +141,42 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 		this._getInnerFeedbackComponents().forEach(x => x.clear && x.clear());
 	}
 
-	_onSubmit() {
-		this._craftResponseObject();
+	async _onSubmit() {
+		this._currentState = this.states.submitting;
+
+		// Should move these out of here
+		const isOptedOut = await this.hmInterface.isOptedOut();
+		const shouldShow = await this.hmInterface.shouldShow();
+		// TODO: show sending feedback screen
+		// TODO:
+		try {
+			await this.hmInterface.sendFeedback(this.responseObject);
+		} catch (e) {
+			console.error(e);
+			this._currentState = this.states.errorSubmitting;
+		}
+
 		this._dispatchSubmitEvent();
-		this._submitted = true;
+		this._currentState = this.states.submitted;
 	}
 
 	_onCancel() {
 		this._dispatchCancelEvent();
 	}
 
-	_onReject() {
+	async _onReject() {
 		this._dispatchRejectEvent();
+		/* await */this.hmInterface.optOut('temporary');
 	}
 
-	_craftResponseObject() {
-		console.log(this._getInnerFeedbackComponents().map(x => x.serialize()));
+	get responseObject() {
+		const result =
+			this._getInnerFeedbackComponents()
+				.map(x => x.serialize())
+				.reduce((prev, cur) => Object.assign(prev, cur));
+
+		result.feedbackVersion = this.feedbackVersion || 1;
+		return result;
 	}
 
 	_dispatchSubmitEvent() {
@@ -142,6 +189,22 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 
 	_dispatchRejectEvent() {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-feedback-container-reject', { bubbles: true, composed: true }));
+	}
+
+	_renderFeedbackSubmittingView() {
+		return html`<div class="user-feedback-submitted-container">
+			<d2l-icon class="user-feedback-submitted-icon" icon="tier3:check-circle"></d2l-icon>
+			<h1 class="user-feedback-submitted-title">${this.localize('submittingFeedback')}</h1>
+			spinner goes here
+		</div>`;
+	}
+
+	_renderErrorSubmittingView() {
+		return html`<div class="user-feedback-submitted-container">
+			<d2l-icon class="user-feedback-submitted-icon" icon="tier3:check-circle"></d2l-icon>
+			<h1 class="user-feedback-submitted-title">${this.localize('submittingFeedback')}</h1>
+			spinner goes here
+		</div>`;
 	}
 
 	_renderFeedbackSubmittedView() {
@@ -194,7 +257,7 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	}
 
 	render() {
-		return this._submitted ? this._renderFeedbackSubmittedView() : this._renderFeedbackView();
+		return this._currentState.render(); //this._submitted ? this._renderFeedbackSubmittedView() : this._renderFeedbackView();
 	}
 }
 customElements.define('d2l-labs-user-feedback-container', UserFeedbackContainer);

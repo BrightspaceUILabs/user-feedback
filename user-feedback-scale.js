@@ -16,7 +16,8 @@ class UserFeedbackScale extends ArrowKeysMixin(LitElement) {
 			selectedText: { type: Number },
 			numoptions: { type: Number },
 			_selectorTabIndex: { type: Number },
-			prompt: { type: String }
+			prompt: { type: String },
+			serializePrefix: { type: String, value: '' },
 		};
 	}
 
@@ -211,7 +212,7 @@ class UserFeedbackScale extends ArrowKeysMixin(LitElement) {
 
 	_toggleCheckedAttribute(button, checked) {
 		if (checked) {
-			button.setAttribute('checked');
+			button.setAttribute('checked', '');
 		} else {
 			button.removeAttribute('checked');
 		}
@@ -225,11 +226,16 @@ class UserFeedbackScale extends ArrowKeysMixin(LitElement) {
 	}
 
 	serialize() {
+		const prepend = (text) => {
+			const prefix = this.serializePrefix || '';
+			return `${prefix}${text}`;
+		};
+
 		return {
-			selectionPrompt: this.prompt,
-			selection: this.selectedValue,
-			selectedIndex: this.selectedIndex,
-			selectedText: this.selectedText,
+			[prepend('prompt')]: this.prompt,
+			[prepend('scaleValue')]: this.selectedValue,
+			[prepend('scaleOutOfValue')]: this.selectedIndex,
+			[prepend('scaleText')]: this.selectedText,
 		};
 	}
 

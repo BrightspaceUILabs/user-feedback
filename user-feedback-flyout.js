@@ -157,7 +157,7 @@ class UserFeedbackScaleItem extends LitElement {
 		if (this.stopscroll) {
 			document.body.style.overflow = 'hidden';
 		}
-		this.setAttribute('opened');
+		this.setAttribute('opened', '');
 	}
 
 	_toggleOff() {
