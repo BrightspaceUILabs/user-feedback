@@ -108,6 +108,14 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 				}
 			});
 		}
+
+		this.hmInterface.shouldShow().then(
+			result => {
+				if (result === true) {
+					this.dispatchEvent(new CustomEvent('d2l-labs-user-feedback-show-button', { bubbles: true, composed: true }));
+				}
+			}
+		).error(console.error);
 	}
 
 	get states() {
@@ -144,11 +152,6 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	async _onSubmit() {
 		this._currentState = this.states.submitting;
 
-		// Should move these out of here
-		const isOptedOut = await this.hmInterface.isOptedOut();
-		const shouldShow = await this.hmInterface.shouldShow();
-		// TODO: show sending feedback screen
-		// TODO:
 		try {
 			await this.hmInterface.sendFeedback(this.responseObject);
 		} catch (e) {

@@ -18,7 +18,8 @@ class UserFeedbackScaleItem extends LitElement {
 			hide: { type: Boolean },
 			hideafterclose: { type: Boolean },
 			stopscroll: { type: Boolean },
-			buttontext: { type: String, attribute: 'button-text' }
+			buttontext: { type: String, attribute: 'button-text' },
+			_restricted: { type: Boolean }
 		};
 	}
 
@@ -139,6 +140,7 @@ class UserFeedbackScaleItem extends LitElement {
 	constructor() {
 		super();
 		this.opened = false;
+		this._restricted = true;
 	}
 
 	focus() {
@@ -230,6 +232,10 @@ class UserFeedbackScaleItem extends LitElement {
 		}
 	}
 
+	_notRestrictedByOptOutOrRecentFeedback() {
+		this.restricted = false;
+	}
+
 	_focusFirst() {
 		getNextFocusable(getFirstFocusableDescendant(this.shadowRoot)).focus();
 	}
@@ -243,7 +249,7 @@ class UserFeedbackScaleItem extends LitElement {
 	}
 
 	render() {
-		if (this.hide || this.hideafterclose && !this.opened) {
+		if (this.hide || this._restricted || this.hideafterclose && !this.opened) {
 			return html`<span></span>`;
 		}
 
@@ -261,7 +267,10 @@ class UserFeedbackScaleItem extends LitElement {
 			</div>`;
 
 		return html`
-			<div @keydown="${this._onKeyDown}">
+			<div
+				@keydown="${this._onKeyDown}"
+				@d2l-labs-user-feedback-show-button="${this._notRestrictedByOptOutOrRecentFeedback}"
+			>
 				<div
 					class="d2l-labs-user-feedback-flyout-first-focusable"
 					tabindex="0"
