@@ -12,7 +12,10 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	static get properties() {
 		return {
 			prompt: { type: String },
-			feedbackVersion: { type: Number },
+			feedbackVersion: { type: Number, attribute: 'feedback-version' },
+			feedbackApplication: { type: String, attribute: 'feedback-application' },
+			feedbackType: { type: String, attribute: 'feedback-type' },
+			feedbackHref: { type: String, attribute: 'feedback-href' },
 			_buttonDisabled: { type: Boolean },
 			_submitted: { type: Boolean },
 			active: { type: Boolean },
@@ -100,10 +103,10 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 
 		if (this.active) {
 			this.hmInterface = new HmInterface({
-				feedbackApplication: 'portfolio',
-				feedbackType: 'portfolio-instructor-approval',
-				feedbackDomainRoot: 'https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com',
-				getToken: () => {
+				feedbackApplication: this.feedbackApplication,
+				feedbackType: this.feedbackType,
+				feedbackDomainRoot: this.feedbackHref,
+				getToken: () => { // TODO: Alright if we use d2l-fetch, maybe look into that
 					return Promise.resolve('Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjliMTg5ZWJhLWZmNjYtNDM1ZC04OTViLWNjOWI3ZDc3ODUyZCJ9.eyJpc3MiOiJodHRwczovL2FwaS5icmlnaHRzcGFjZS5jb20vYXV0aCIsImF1ZCI6Imh0dHBzOi8vYXBpLmJyaWdodHNwYWNlLmNvbS9hdXRoL3Rva2VuIiwiZXhwIjoxNTcxNDUyNzE1LCJuYmYiOjE1NzE0NDkxMTUsInN1YiI6IjE2OSIsInRlbmFudGlkIjoiOTlkNmM4OGYtM2Y5ZS00NWU2LWI4MDQtOTg4YjFmNjhlNDYzIiwiYXpwIjoibG1zOjk5ZDZjODhmLTNmOWUtNDVlNi1iODA0LTk4OGIxZjY4ZTQ2MyIsInNjb3BlIjoiKjoqOioiLCJqdGkiOiI5ZmJhYjIyMS1hMDg3LTRlYTItOGRiNy1jYmU3MGUzNzA2YmQifQ.IzYgfbrQPyQyObPCOh9sqMLc4dnh3BRTGazYKi31k1JzsVl-ccMkTeLohXoAjodekXiXp7yzeyZYK4R0ArAMiSYh4h7Drz0bY5z-RmOPSKmbJ79fFEAnK3qP8thPaoAOb8KX-D63wpHefU6LtISv5tcZotlkJFEC51kOVdZ72YZBXfuTvML72ELDo8RBou5pTsetl0B7z7t2yU9CKg0y4-l9vj3iKZTgrqAnLFdbPiIIeGo9y4UrPsFufQXlzwd6_W9YP9yjhWD5FIH9FKDVIX-Jv7rI9kZxYBhxm2SdUKxT5evHhIJTmJiJKCJPGxXyuj0USNezA05KdeyUNM03WA  ');
 				}
 			});
