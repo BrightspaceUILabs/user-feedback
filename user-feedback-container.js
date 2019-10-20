@@ -231,7 +231,7 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 		</div>`;
 	}
 
-	_renderSubmittedText() {
+	_renderPIESuggestionForEnglishOnly() {
 		// PIE is in English only so don't translate it
 		if (this.__pageLanguage && this.__pageLanguage.indexOf('en') === 0) {
 			return html`
@@ -246,7 +246,7 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 		return html`<div class="user-feedback-submitted-container">
 			<d2l-icon class="user-feedback-submitted-icon" icon="tier3:check-circle"></d2l-icon>
 			<h1 class="user-feedback-submitted-title">${this.localize('submittedTitle')}</h1>
-			${this._renderSubmittedText()}
+			${this._renderPIESuggestionForEnglishOnly()}
 			<div class="user-feedback-container-buttons">
 				<d2l-button
 					primary

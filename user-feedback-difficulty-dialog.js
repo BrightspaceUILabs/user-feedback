@@ -7,10 +7,10 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
 class UserFeedbackDifficultyDialog extends LocalizeMixin(LitElement) {
-
 	static get properties() {
 		return {
-			prompt: { type: String }
+			prompt: { type: String },
+			active: { type: Boolean }
 		};
 	}
 
@@ -68,6 +68,7 @@ class UserFeedbackDifficultyDialog extends LocalizeMixin(LitElement) {
 				feedback-version="1"
 				feedback-href="https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com"
 				getToken="${this._tempGetToken}"
+				?active="${this.active}"
 			>
 				<d2l-labs-user-feedback-text-input
 					defaultlabeltext="${this.localize('noSelectionPrompt')}"
