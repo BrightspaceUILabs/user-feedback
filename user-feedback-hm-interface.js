@@ -1,27 +1,41 @@
 import { Rels, Classes, Actions } from 'd2l-hypermedia-constants/index';
 import SirenParse from 'siren-parser';
-const RESPONSE_FREQUENCY = 15552000000; // 6 months // TODO: enough?
+const RESPONSE_FREQUENCY_NEVER_RESHOW = -1;
 
 export class HmInterface {
 	constructor({
 		feedbackApplication,
 		feedbackType,
 		feedbackDomainRoot,
-		getToken,
+		token,
+		responseFrequency = RESPONSE_FREQUENCY_NEVER_RESHOW
 	}) {
 		this.feedbackApplication = feedbackApplication;
 		this.feedbackType = feedbackType;
 		this.feedbackDomainRoot = feedbackDomainRoot;
-		this.token = null;
-		this.getToken = getToken;
+		this.token = token;
+		this.responseFrequency = responseFrequency;
 		this.setupPromise = this.setup();
+	}
+
+	checkForRequiredParams() {
+		if (!this.feedbackApplication) {
+			throw new Error('no feedbackApplication provided');
+		}
+		if (!this.feedbackType) {
+			throw new Error('no feedbackType provided');
+		}
+		if (!this.feedbackDomainRoot) {
+			throw new Error('no feedbackDomainRoot provided');
+		}
+		if (!this.token) {
+			throw new Error('no token provided');
+		}
 	}
 
 	async setup() {
 		this.token = await this.getToken();
-		if (!this.feedbackType) {
-			throw new Error('no feedbackApplicationType provided');
-		}
+		this.checkForRequiredParams();
 
 		const domainRootEntity = await this.makeCall(this.feedbackDomainRoot);
 		const applicationsHref = domainRootEntity.getLinkByRel(Rels.Feedback.applications).href;
@@ -48,6 +62,7 @@ export class HmInterface {
 	}
 
 	async shouldShow() {
+		await this.setupPromise;
 		return !(await this.isOptedOut() || await this.hasRespondedRecently());
 	}
 
@@ -67,7 +82,11 @@ export class HmInterface {
 	}
 
 	shouldShowAgain(timeToCheckMs) {
-		return timeToCheckMs > new Date().getMilliseconds() - RESPONSE_FREQUENCY;
+		if (this.responseFrequency === RESPONSE_FREQUENCY_NEVER_RESHOW) {
+			return false;
+		}
+
+		return timeToCheckMs > new Date().getMilliseconds() - this.responseFrequency;
 	}
 
 	async getMostRecentFeedbackSubmissionTime() {

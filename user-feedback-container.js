@@ -22,7 +22,8 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 			_buttonDisabled: { type: Boolean },
 			_submitted: { type: Boolean },
 			active: { type: Boolean },
-			_currentState: { type: Object }
+			_currentState: { type: Object },
+			token: { type: String },
 		};
 	}
 
@@ -110,6 +111,10 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 		super();
 		this._updateButtonDisabled();
 		this._currentState = this.states.submitted;
+	}
+
+	connectedCallback() {
+		console.log(this);
 
 		if (this.active) {
 			this.hmInterface = new HmInterface({
@@ -120,14 +125,15 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 					return Promise.resolve('Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjliMTg5ZWJhLWZmNjYtNDM1ZC04OTViLWNjOWI3ZDc3ODUyZCJ9.eyJpc3MiOiJodHRwczovL2FwaS5icmlnaHRzcGFjZS5jb20vYXV0aCIsImF1ZCI6Imh0dHBzOi8vYXBpLmJyaWdodHNwYWNlLmNvbS9hdXRoL3Rva2VuIiwiZXhwIjoxNTcxNDUyNzE1LCJuYmYiOjE1NzE0NDkxMTUsInN1YiI6IjE2OSIsInRlbmFudGlkIjoiOTlkNmM4OGYtM2Y5ZS00NWU2LWI4MDQtOTg4YjFmNjhlNDYzIiwiYXpwIjoibG1zOjk5ZDZjODhmLTNmOWUtNDVlNi1iODA0LTk4OGIxZjY4ZTQ2MyIsInNjb3BlIjoiKjoqOioiLCJqdGkiOiI5ZmJhYjIyMS1hMDg3LTRlYTItOGRiNy1jYmU3MGUzNzA2YmQifQ.IzYgfbrQPyQyObPCOh9sqMLc4dnh3BRTGazYKi31k1JzsVl-ccMkTeLohXoAjodekXiXp7yzeyZYK4R0ArAMiSYh4h7Drz0bY5z-RmOPSKmbJ79fFEAnK3qP8thPaoAOb8KX-D63wpHefU6LtISv5tcZotlkJFEC51kOVdZ72YZBXfuTvML72ELDo8RBou5pTsetl0B7z7t2yU9CKg0y4-l9vj3iKZTgrqAnLFdbPiIIeGo9y4UrPsFufQXlzwd6_W9YP9yjhWD5FIH9FKDVIX-Jv7rI9kZxYBhxm2SdUKxT5evHhIJTmJiJKCJPGxXyuj0USNezA05KdeyUNM03WA  ');
 				}
 			});
+			this.showButtonAfterShouldShowCheck();
+		}
+	}
 
-			this.hmInterface.shouldShow().then(
-				result => {
-					if (result === true) {
-						this.dispatchEvent(new CustomEvent('d2l-labs-user-feedback-show-button', { bubbles: true, composed: true }));
-					}
-				}
-			).error(console.error);
+	async showButtonAfterShouldShowCheck() {
+
+		const result = this.hmInterface.shouldShow();
+		if (result === true) {
+			this.dispatchEvent(new CustomEvent('d2l-labs-user-feedback-show-button', { bubbles: true, composed: true }));
 		}
 	}
 
@@ -136,8 +142,6 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 			enteringFeedback: { name: 'enteringFeedback', render: this._renderFeedbackView.bind(this) },
 			submitting: { name: 'submitting', render: this._renderFeedbackSubmittingView.bind(this) },
 			errorSubmitting: { name: 'errorSubmitting', render: this._renderErrorSubmittingView.bind(this) },
-			// optingOut: 'optingOut',
-			// errorOptingOut: 'errorOptingOut',
 			submitted: { name: 'submitted', render: this._renderFeedbackSubmittedView.bind(this) }
 		};
 	}

@@ -249,13 +249,13 @@ class UserFeedbackScaleItem extends LitElement {
 	}
 
 	render() {
-		if (this.hide || this._restricted || this.hideafterclose && !this.opened) {
+		if (this.hide || this.hideafterclose && !this.opened) {
 			return html`<span></span>`;
 		}
 
 		const direction = this.opened ? 'down' : 'up';
 
-		const button = this.hide ? '' :
+		const button = this.hide || this._restricted ? '' :
 			html`<div class="d2l-labs-user-feedback-flyout-launch-button-container">
 				<button
 					class="d2l-labs-user-feedback-flyout-launch-button d2l-body-compact"
