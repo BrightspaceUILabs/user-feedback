@@ -44,7 +44,7 @@ export class HmInterface {
 	async getApplicationEntity() {
 		const applicationsSubEntities =
 			this.applicationsEntity.getSubEntitiesByClass(Classes.feedback.feedbackApplication)
-				.filter(x => console.log(x) || x.title === this.feedbackApplication);
+				.filter(x => x.title === this.feedbackApplication);
 		if (!applicationsSubEntities || !applicationsSubEntities.length) {
 			throw new Error(`can't find the ${this.feedbackApplication} application`);
 		}
@@ -59,6 +59,9 @@ export class HmInterface {
 			throw new Error(`can't find the ${this.feedbackType} type`);
 		}
 		this.applicationTypeEntity = await this.makeCall(applicationTypeEntities[0].href);
+	}
+
+	getDataFromApplicationTypeEntity() {
 		this.feedbackSubmissions = this.applicationTypeEntity.getSubEntitiesByRel(Rels.feedbackSubmission);
 		this.optOutAction = this.applicationTypeEntity.getActionByName(Actions.feedback.optOut);
 		this.sendFeedbackAction = this.applicationTypeEntity.getActionByName(Actions.feedback.submit);
@@ -66,9 +69,10 @@ export class HmInterface {
 
 	async setup() {
 		this.checkForRequiredParams();
-		this.getApplicationsEntity();
-		this.getApplicationEntity();
-		this.getApplicationTypeEntity();
+		await this.getApplicationsEntity();
+		await this.getApplicationEntity();
+		await this.getApplicationTypeEntity();
+		this.getDataFromApplicationTypeEntity();
 	}
 
 	async shouldShow() {
@@ -122,21 +126,19 @@ export class HmInterface {
 		if (!await this.optionExistsOnField(this.optOutAction.getFieldByName('optOutState'), this.optOutType)) {
 			throw new Error(`Invalid opt-out parameter ${this.optOutType}`);
 		}
-		const result = await this.makeCall(this.optOutAction.href, {
+		await this.makeCall(this.optOutAction.href, {
 			method: this.optOutAction.method,
 			body: { optOutState: this.optOutType }
 		});
-		console.log('OPT OUT RESULT', result);
 	}
 
 	async sendFeedback(feedbackObject) {
 		await this.setupPromise;
 
-		const result = await this.makeCall(this.sendFeedbackAction.href, {
+		await this.makeCall(this.sendFeedbackAction.href, {
 			method: this.sendFeedbackAction.method,
 			body: feedbackObject
 		});
-		console.log('SUBMIT RESULT', result);
 	}
 
 	async makeCall(href, { method = 'GET', body } = {}) {
@@ -157,7 +159,6 @@ export class HmInterface {
 			throw new Error(`${href} call was not successful, status: ${response.status}, ok: ${response.ok}`);
 		}
 		const deserializedResponse = SirenParse(await response.json());
-		console.log('deserializedResponse', deserializedResponse);
 		return deserializedResponse;
 	}
 

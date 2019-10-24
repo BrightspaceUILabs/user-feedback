@@ -110,13 +110,12 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	constructor() {
 		super();
 		this._updateButtonDisabled();
-		this._currentState = this.states.submitted;
+		this._currentState = this.states.enteringFeedback;
 		this.optOutType = 'permanent';
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		console.log(this);
 
 		this.hmInterface = new HmInterface({
 			feedbackApplication: this.feedbackApplication,
@@ -237,7 +236,10 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 		if (this.__language && this.__language.indexOf('en') === 0) {
 			return html`
 			<div class="user-feedback-submitted-text">
-				You can also share ideas that would make our product even better on our <a href="https://community.brightspace.com/s/article/Product-Idea-Exchange-Overview">Product Idea Exchange</a>
+				You can also share ideas that would make our product even better on our
+				<a href="https://community.brightspace.com/s/article/Product-Idea-Exchange-Overview" target="_top">
+					Product Idea Exchange
+				</a>
 			</div>`;
 		}
 		return '';
