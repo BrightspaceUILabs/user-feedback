@@ -35,12 +35,13 @@ export class HmInterface {
 		}
 	}
 
-	async setup() {
-		this.checkForRequiredParams();
-
+	async getApplicationsEntity() {
 		const domainRootEntity = await this.makeCall(this.feedbackDomainRoot);
 		const applicationsHref = domainRootEntity.getLinkByRel(Rels.Feedback.applications).href;
 		this.applicationsEntity = await this.makeCall(applicationsHref);
+	}
+
+	async getApplicationEntity() {
 		const applicationsSubEntities =
 			this.applicationsEntity.getSubEntitiesByClass(Classes.feedback.feedbackApplication)
 				.filter(x => console.log(x) || x.title === this.feedbackApplication);
@@ -48,18 +49,26 @@ export class HmInterface {
 			throw new Error(`can't find the ${this.feedbackApplication} application`);
 		}
 		const applicationLinkHref = applicationsSubEntities[0].href;
-		const applicationEntity = await this.makeCall(applicationLinkHref);
-		const applicationTypeEntities = applicationEntity.getSubEntitiesByClass(Classes.feedback.feedbackType)
+		this.applicationEntity = await this.makeCall(applicationLinkHref);
+	}
+
+	async getApplicationTypeEntity() {
+		const applicationTypeEntities = this.applicationEntity.getSubEntitiesByClass(Classes.feedback.feedbackType)
 			.filter(x => x.title === this.feedbackType);
 		if (!applicationTypeEntities || !applicationTypeEntities.length) {
 			throw new Error(`can't find the ${this.feedbackType} type`);
 		}
 		this.applicationTypeEntity = await this.makeCall(applicationTypeEntities[0].href);
-		console.log('applicationTypeEntity', this.applicationTypeEntity);
 		this.feedbackSubmissions = this.applicationTypeEntity.getSubEntitiesByRel(Rels.feedbackSubmission);
-		console.log('feedback submissions', this.feedbackSubmissions);
 		this.optOutAction = this.applicationTypeEntity.getActionByName(Actions.feedback.optOut);
 		this.sendFeedbackAction = this.applicationTypeEntity.getActionByName(Actions.feedback.submit);
+	}
+
+	async setup() {
+		this.checkForRequiredParams();
+		this.getApplicationsEntity();
+		this.getApplicationEntity();
+		this.getApplicationTypeEntity();
 	}
 
 	async shouldShow() {
