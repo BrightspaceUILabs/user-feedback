@@ -31,12 +31,12 @@ class UserFeedbackScaleItem extends LitElement {
 
 			.d2l-labs-user-feedback-flyout-container {
 				width: 100vw;
-				border-top: solid var(--d2l-color-celestine) 2px;
 				bottom: var(--d2l-labs-user-feedback-bottom, 0);
+				border-top: solid transparent 0;
 				background: var(--d2l-color-regolith);
 				display: block;
 				max-height: 0;
-				transition: max-height 0.5s;
+				transition: max-height 0.5s, border-top 0s linear 0.5s;
 				overflow: hidden;
 				--user-feedback-scale-item-bg-spacer-background: var(--d2l-color-regolith);
 				z-index: 1000;
@@ -54,8 +54,10 @@ class UserFeedbackScaleItem extends LitElement {
 			}
 
 			:host([opened]) .d2l-labs-user-feedback-flyout-container {
+				border-top: solid var(--d2l-color-celestine) 2px;
 				height: var(--d2l-labs-user-feedback-flyout-height, auto);
 				max-height: 30rem;
+				transition: max-height 0.5s;
 			}
 
 			.d2l-labs-user-feedback-flyout-content {
