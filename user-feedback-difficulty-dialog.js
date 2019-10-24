@@ -10,11 +10,11 @@ class UserFeedbackDifficultyDialog extends LocalizeMixin(LitElement) {
 	static get properties() {
 		return {
 			prompt: { type: String },
-			active: { type: Boolean },
 			feedbackVersion: { type: Number, attribute: 'feedback-version' },
 			feedbackApplication: { type: String, attribute: 'feedback-application' },
 			feedbackType: { type: String, attribute: 'feedback-type' },
 			feedbackHref: { type: String, attribute: 'feedback-href' },
+			optOutType: { type: String, attribute: 'opt-out-type' },
 			token: { type: String },
 		};
 	}
@@ -69,7 +69,7 @@ class UserFeedbackDifficultyDialog extends LocalizeMixin(LitElement) {
 				feedback-version="${this.feedbackVersion}"
 				feedback-href="${this.feedbackHref}"
 				.token="${this.token}"
-				?active="${this.active}"
+				.opt-out-type="${this.optOutType}"
 			>
 				<d2l-labs-user-feedback-text-input
 					defaultlabeltext="${this.localize('noSelectionPrompt')}"

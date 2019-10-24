@@ -21,9 +21,9 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 			feedbackHref: { type: String, attribute: 'feedback-href' },
 			_buttonDisabled: { type: Boolean },
 			_submitted: { type: Boolean },
-			active: { type: Boolean },
 			_currentState: { type: Object },
 			token: { type: String },
+			optOutType: { type: String, attribute: 'opt-out-type' },
 		};
 	}
 
@@ -111,27 +111,25 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 		super();
 		this._updateButtonDisabled();
 		this._currentState = this.states.submitted;
+		this.optOutType = 'permanent';
 	}
 
 	connectedCallback() {
+		super.connectedCallback();
 		console.log(this);
 
-		if (this.active) {
-			this.hmInterface = new HmInterface({
-				feedbackApplication: this.feedbackApplication,
-				feedbackType: this.feedbackType,
-				feedbackDomainRoot: this.feedbackHref,
-				getToken: () => { // TODO: Alright if we use d2l-fetch, maybe look into that
-					return Promise.resolve('Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjliMTg5ZWJhLWZmNjYtNDM1ZC04OTViLWNjOWI3ZDc3ODUyZCJ9.eyJpc3MiOiJodHRwczovL2FwaS5icmlnaHRzcGFjZS5jb20vYXV0aCIsImF1ZCI6Imh0dHBzOi8vYXBpLmJyaWdodHNwYWNlLmNvbS9hdXRoL3Rva2VuIiwiZXhwIjoxNTcxNDUyNzE1LCJuYmYiOjE1NzE0NDkxMTUsInN1YiI6IjE2OSIsInRlbmFudGlkIjoiOTlkNmM4OGYtM2Y5ZS00NWU2LWI4MDQtOTg4YjFmNjhlNDYzIiwiYXpwIjoibG1zOjk5ZDZjODhmLTNmOWUtNDVlNi1iODA0LTk4OGIxZjY4ZTQ2MyIsInNjb3BlIjoiKjoqOioiLCJqdGkiOiI5ZmJhYjIyMS1hMDg3LTRlYTItOGRiNy1jYmU3MGUzNzA2YmQifQ.IzYgfbrQPyQyObPCOh9sqMLc4dnh3BRTGazYKi31k1JzsVl-ccMkTeLohXoAjodekXiXp7yzeyZYK4R0ArAMiSYh4h7Drz0bY5z-RmOPSKmbJ79fFEAnK3qP8thPaoAOb8KX-D63wpHefU6LtISv5tcZotlkJFEC51kOVdZ72YZBXfuTvML72ELDo8RBou5pTsetl0B7z7t2yU9CKg0y4-l9vj3iKZTgrqAnLFdbPiIIeGo9y4UrPsFufQXlzwd6_W9YP9yjhWD5FIH9FKDVIX-Jv7rI9kZxYBhxm2SdUKxT5evHhIJTmJiJKCJPGxXyuj0USNezA05KdeyUNM03WA  ');
-				}
-			});
-			this.showButtonAfterShouldShowCheck();
-		}
+		this.hmInterface = new HmInterface({
+			feedbackApplication: this.feedbackApplication,
+			feedbackType: this.feedbackType,
+			feedbackDomainRoot: this.feedbackHref,
+			token: this.token,
+			optOutType: this.optOutType
+		});
+		this.showButtonAfterShouldShowCheck();
 	}
 
 	async showButtonAfterShouldShowCheck() {
-
-		const result = this.hmInterface.shouldShow();
+		const result = await this.hmInterface.shouldShow();
 		if (result === true) {
 			this.dispatchEvent(new CustomEvent('d2l-labs-user-feedback-show-button', { bubbles: true, composed: true }));
 		}
@@ -186,7 +184,7 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 
 	async _onReject() {
 		this._dispatchRejectEvent();
-		/* await */this.hmInterface.optOut('temporary');
+		await this.hmInterface.optOut();
 	}
 
 	get responseObject() {
@@ -228,7 +226,6 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 					primary
 					@click="${this._onCancel}"
 				>
-					<!-- Todo: verify that this also removes the button -->
 					${this.localize('close')}
 				</d2l-button>
 			</div>
@@ -237,7 +234,7 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 
 	_renderPIESuggestionForEnglishOnly() {
 		// PIE is in English only so don't translate it
-		if (this.__pageLanguage && this.__pageLanguage.indexOf('en') === 0) {
+		if (this.__language && this.__language.indexOf('en') === 0) {
 			return html`
 			<div class="user-feedback-submitted-text">
 				You can also share ideas that would make our product even better on our <a href="https://community.brightspace.com/s/article/Product-Idea-Exchange-Overview">Product Idea Exchange</a>

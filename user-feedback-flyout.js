@@ -233,7 +233,7 @@ class UserFeedbackScaleItem extends LitElement {
 	}
 
 	_notRestrictedByOptOutOrRecentFeedback() {
-		this.restricted = false;
+		this._restricted = false;
 	}
 
 	_focusFirst() {

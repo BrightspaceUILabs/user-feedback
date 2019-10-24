@@ -8,7 +8,8 @@ export class HmInterface {
 		feedbackType,
 		feedbackDomainRoot,
 		token,
-		responseFrequency = RESPONSE_FREQUENCY_NEVER_RESHOW
+		responseFrequency = RESPONSE_FREQUENCY_NEVER_RESHOW,
+		optOutType = 'permanent',
 	}) {
 		this.feedbackApplication = feedbackApplication;
 		this.feedbackType = feedbackType;
@@ -16,6 +17,7 @@ export class HmInterface {
 		this.token = token;
 		this.responseFrequency = responseFrequency;
 		this.setupPromise = this.setup();
+		this.optOutType = optOutType;
 	}
 
 	checkForRequiredParams() {
@@ -34,14 +36,13 @@ export class HmInterface {
 	}
 
 	async setup() {
-		this.token = await this.getToken();
 		this.checkForRequiredParams();
 
 		const domainRootEntity = await this.makeCall(this.feedbackDomainRoot);
 		const applicationsHref = domainRootEntity.getLinkByRel(Rels.Feedback.applications).href;
-		const applicationsEntity = await this.makeCall(applicationsHref);
+		this.applicationsEntity = await this.makeCall(applicationsHref);
 		const applicationsSubEntities =
-			applicationsEntity.getSubEntitiesByClass(Classes.feedback.feedbackApplication)
+			this.applicationsEntity.getSubEntitiesByClass(Classes.feedback.feedbackApplication)
 				.filter(x => console.log(x) || x.title === this.feedbackApplication);
 		if (!applicationsSubEntities || !applicationsSubEntities.length) {
 			throw new Error(`can't find the ${this.feedbackApplication} application`);
@@ -68,7 +69,7 @@ export class HmInterface {
 
 	async isOptedOut() {
 		await this.setupPromise;
-		const properties = this.applicationsEntity.properties;
+		const properties = this.applicationTypeEntity.properties;
 
 		if (properties.OptOut === 'permanent') {
 			return true;
@@ -103,18 +104,18 @@ export class HmInterface {
 		return field.value.filter(o => o.value === option).length > 0;
 	}
 
-	async optOut(optOutType) {
+	async optOut() {
 		await this.setupPromise;
 
 		if (!this.optOutAction || !this.optOutAction.hasFieldByName('optOutState')) {
 			throw new Error('Problem with opt-opt action');
 		}
-		if (!await this.optOutStateFieldOptionExists(this.optOutAction, this.optOutAction.getFieldByName('optOutState'))) {
-			throw new Error(`Invalid opt-out parameter ${optOutType}`);
+		if (!await this.optionExistsOnField(this.optOutAction.getFieldByName('optOutState'), this.optOutType)) {
+			throw new Error(`Invalid opt-out parameter ${this.optOutType}`);
 		}
 		const result = await this.makeCall(this.optOutAction.href, {
 			method: this.optOutAction.method,
-			body: { optOutState: optOutType }
+			body: { optOutState: this.optOutType }
 		});
 		console.log('OPT OUT RESULT', result);
 	}
