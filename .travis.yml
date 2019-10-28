@@ -16,7 +16,7 @@ after_success:
 - frauci-update-version -d=skip && export TRAVIS_TAG=$(frauci-get-version)
 env:
   global:
-  - SAUCE_USERNAME: Desire2Learn
+  - SAUCE_USERNAME: D2L_Farnsworth
   - REPO_NAME=user-feedback
   - OWNER_NAME=BrightspaceUILabs
 deploy:
