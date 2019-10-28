@@ -16,8 +16,8 @@ export class HmInterface {
 		this.feedbackDomainRoot = feedbackDomainRoot;
 		this.token = token;
 		this.responseFrequency = responseFrequency;
-		this.setupPromise = this.setup();
 		this.optOutType = optOutType;
+		this.setupPromise = this.setup();
 	}
 
 	checkForRequiredParams() {
@@ -62,7 +62,7 @@ export class HmInterface {
 	}
 
 	getDataFromApplicationTypeEntity() {
-		this.feedbackSubmissions = this.applicationTypeEntity.getSubEntitiesByRel(Rels.feedbackSubmission);
+		this.feedbackSubmissions = this.applicationTypeEntity.getSubEntitiesByRel(Rels.Feedback.submission);
 		this.optOutAction = this.applicationTypeEntity.getActionByName(Actions.feedback.optOut);
 		this.sendFeedbackAction = this.applicationTypeEntity.getActionByName(Actions.feedback.submit);
 	}
@@ -105,11 +105,16 @@ export class HmInterface {
 
 	async getMostRecentFeedbackSubmissionTime() {
 		await this.setupPromise;
-		return (this.feedbackSubmissions && this.feedbackSubmissions.length > 0) ? this.feedbackSubmissions[0].submittedMs : -1;
+		return this.feedbackSubmissions[0].submittedMs;
 	}
 
 	async hasRespondedRecently() {
 		await this.setupPromise;
+
+		if (!this.feedbackSubmissions || this.feedbackSubmissions.length === 0) {
+			return false;
+		}
+
 		return !this.shouldShowAgain(await this.getMostRecentFeedbackSubmissionTime());
 	}
 
