@@ -1,4 +1,4 @@
-import { Rels, Classes, Actions } from 'd2l-hypermedia-constants/index';
+import { Actions, Classes, Rels } from 'd2l-hypermedia-constants/index';
 import SirenParse from 'siren-parser';
 const RESPONSE_FREQUENCY_NEVER_RESHOW = -1;
 
