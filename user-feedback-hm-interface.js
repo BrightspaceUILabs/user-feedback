@@ -141,6 +141,7 @@ export class HmInterface {
 		});
 	}
 
+	// TODO: when there is an easier way for scripts to hook into the entity store, use that instead of this
 	async makeCall(href, { method = 'GET', body } = {}) {
 		if (!href) {
 			throw new Error('no href provided');
