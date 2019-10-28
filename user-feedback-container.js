@@ -24,6 +24,7 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 			_currentState: { type: Object },
 			token: { type: String },
 			optOutType: { type: String, attribute: 'opt-out-type' },
+			additionalFields: { type: Object, attribute: 'additional-fields' }
 		};
 	}
 
@@ -112,6 +113,7 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 		this._updateButtonDisabled();
 		this._currentState = this.states.enteringFeedback;
 		this.optOutType = 'permanent';
+		this.additionalFields = {};
 	}
 
 	connectedCallback() {
@@ -187,12 +189,14 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	}
 
 	get responseObject() {
-		const result =
+		let result =
 			this._getInnerFeedbackComponents()
 				.map(x => x.serialize())
 				.reduce((prev, cur) => Object.assign(prev, cur));
 
-		result.feedbackVersion = this.feedbackVersion || 1;
+		const additionalFields  = this.additionalFields || {};
+		result = Object.assign({ feedbackVersion: this.feedbackVersion || 1 }, additionalFields, result);
+
 		return result;
 	}
 
