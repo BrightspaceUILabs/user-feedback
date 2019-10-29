@@ -7,12 +7,12 @@
   },
   "files": [
     "user-feedback-container.js",
-    "user-feedback-difficulty-dialog.js",
     "user-feedback-flyout.js",
     "user-feedback-launcher.js",
     "user-feedback-scale-item.js",
     "user-feedback-scale.js",
-    "user-feedback-text-input.js"
+    "user-feedback-text-input.js",
+    "user-feedback-hm-interface.js"
   ],
   "scripts": {
     "lint": "eslint . --ext .js,.html",
