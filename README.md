@@ -34,11 +34,12 @@ npm install @brightspace-ui-labs/user-feedback
 The wrapper for your feedback elements, this adds submit, cancel, and opt-out buttons and also handles the different states after the user submits.
 
 #### Attributes
-- `feedback-version`: starts at 1, increment this each time you change the feedback interior for versioning
-- `feedback-application`: the name of the application you want to provide feedback for, must be set up as an lms plugin
-- `feedback-type`: the type of the feedback you want to provide for the application, must be set up as an lms plugin
-- `feedback-href`: the root of the feedback hm domain
-- `token`: a token to use for the api calls
+- `feedback-version`: Starts at 1, increment this each time you change the feedback interior for versioning
+- `feedback-application`: The name of the application you want to provide feedback for, must be set up as an lms plugin
+- `feedback-type`: The type of the feedback you want to provide for the application, must be set up as an lms plugin
+- `feedback-href`: The root of the feedback hm domain
+- `token`: A token to use for the api calls
+- `additional-fields`: An object containing any other key/value pairs you would like to add to the feedback payload
 
 ```html
 	<d2l-labs-user-feedback-container prompt="Container Prompt"
