@@ -1,3 +1,5 @@
+import '@brightspace-ui/core/components/backdrop/backdrop';
+
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import {
 	getFirstFocusableDescendant,
@@ -246,10 +248,6 @@ class UserFeedbackScaleItem extends LitElement {
 		getPreviousFocusable(getLastFocusableDescendant(this.shadowRoot)).focus();
 	}
 
-	_onShimClick() {
-		this._toggleOff();
-	}
-
 	render() {
 		if (this.hide || this.hideafterclose && !this.opened) {
 			return html`<span></span>`;
@@ -279,7 +277,7 @@ class UserFeedbackScaleItem extends LitElement {
 					@focusin="${this._focusLast}"
 				></div>
 				${button}
-				<div class="d2l-labs-user-feedback-flyout-container">
+				<div class="d2l-labs-user-feedback-flyout-container" id="d2l-labs-user-feedback-flyout-container">
 					<div class="d2l-labs-user-feedback-flyout-content"
 						@d2l-labs-user-feedback-container-cancel="${this._onCancel}"
 						@d2l-labs-user-feedback-container-reject="${this._onReject}"
@@ -293,7 +291,7 @@ class UserFeedbackScaleItem extends LitElement {
 						></span>
 					</div>
 				</div>
-				<div class="flyout-shim" @click=${this._onShimClick}></div>
+				<d2l-backdrop ?shown=${this.opened} for-target="d2l-labs-user-feedback-flyout-container"></d2l-backdrop>
 			</div>
 		`;
 	}
