@@ -30,11 +30,96 @@ npm install @brightspace-ui-labs/user-feedback
 
 ## Usage
 
+### d2l-labs-user-feedback-container
+The wrapper for your feedback elements, this adds submit, cancel, and opt-out buttons and also handles the different states after the user submits.
+
+#### Attributes
+- `feedback-version`: starts at 1, increment this each time you change the feedback interior for versioning
+- `feedback-application`: the name of the application you want to provide feedback for, must be set up as an lms plugin
+- `feedback-type`: the type of the feedback you want to provide for the application, must be set up as an lms plugin
+- `feedback-href`: the root of the feedback hm domain
+- `token`: a token to use for the api calls
+
 ```html
-<script type="module">
-    import '@brightspace-ui-labs/user-feedback/user-feedback.js';
-</script>
-<d2l-labs-user-feedback>My element</d2l-labs-user-feedback>
+	<d2l-labs-user-feedback-container prompt="Container Prompt"
+		feedback-version="1"
+		feedback-application="name-of-application"
+		feedback-type="type-of-feedback"
+		feedback-href="href-of-feedback-hm-domain-root"
+		token="token"
+	>
+		<!-- slotted d2l-labs-user-feedback-text-input and d2l-labs-user-feedback-scale elements -->
+	</d2l-labs-user-feedback-container>
+```
+
+### d2l-labs-user-feedback-scale
+A component where a user can select from a group of items on how they feel about something.
+
+#### Attributes
+- `prompt`: The text prompt to list above the scale
+- `serializeprefix`: A prefix to prepend to the values when serializing
+
+When the container submits, the scale will add these properties to the submitted post request
+```
+[serializeprefix]prompt
+[serializeprefix]scaleValue
+[serializeprefix]scaleOutOfValue
+[serializeprefix]scaleText
+```
+
+```html
+<d2l-labs-user-feedback-scale prompt="How do you like using our product?">
+	<!-- slotted scale items -->
+</d2l-labs-user-feedback-scale>
+```
+
+### d2l-labs-user-feedback-text-input
+
+#### Attributes
+- `defaultlabeltext`: the default prompt for the text
+
+```html
+<d2l-labs-user-feedback-text-input defaultlabeltext="Type something here"></d2l-labs-user-feedback-text-input>
+```
+
+#### Slotting in a feedback scale
+
+This will cause a feedback scale to render on top of the text input, when the user selects an item, the item's `selectedtextprompt` value will be used as the prompt for the text input.
+
+```html
+<d2l-labs-user-feedback-text-input defaultlabeltext="Type something here">
+	<d2l-labs-user-feedback-scale prompt="How do you like using our product?">
+		<d2l-labs-user-feedback-scale-item value="1" selectedtextprompt="Why don't you like it?">I don't like it</d2l-labs-user-feedback-scale-item>
+		<d2l-labs-user-feedback-scale-item value="2" selectedtextprompt="What could be better?">It's alright</d2l-labs-user-feedback-scale-item>
+		<d2l-labs-user-feedback-scale-item value="3" selectedtextprompt="Why do you like it?">It's good</d2l-labs-user-feedback-scale-item>
+	</d2l-labs-user-feedback-scale>
+</d2l-labs-user-feedback-text-input>
+```
+
+When the container submits, the text-input will add these properties to the submitted post request
+```
+[serializeprefix]textField
+[serializeprefix]textFieldUserInput
+(and the serialized result of a nested scale, if any)
+```
+
+### d2l-labs-user-feedback-flyout
+A component for placing your feedback items in a flyout tray that opens from the bottom of the screen. Will only appear after the container loads the hypermedia entities for submitting to the api, after the user has submitted feedback and closed the flyout, it disappears
+
+```html
+<d2l-labs-user-feedback-flyout button-text="launch the feedback component">
+	<!-- slot in the container -->
+</d2l-labs-user-feedback-flyout>
+```
+
+#### Attributes
+- `button-text`: the text that you want to place on the button
+
+```html
+<d2l-labs-user-feedback-flyout
+	button-text="launch the feedback component">
+	<!-- slotted d2l-labs-user-feedback-container -->
+</d2l-labs-user-feedback-flyout>
 ```
 
 ## Developing, Testing and Contributing
