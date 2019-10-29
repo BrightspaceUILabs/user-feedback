@@ -100,42 +100,42 @@
 				]
 			},
 			'https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/applications/portfolio/portfolio-instructor-approval': {
-				"class": [
-					"feedback-type"
+				'class': [
+					'feedback-type'
 				],
-				"properties": {
-					"ApplicationName": "portfolio",
-					"Type": "portfolio-instructor-approval"
+				'properties': {
+					'ApplicationName': 'portfolio',
+					'Type': 'portfolio-instructor-approval'
 				},
-				"actions": [
+				'actions': [
 					{
-						"href": "https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/applications/portfolio/portfolio-instructor-approval",
-						"name": "submit-feedback",
-						"method": "POST"
+						'href': 'https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/applications/portfolio/portfolio-instructor-approval',
+						'name': 'submit-feedback',
+						'method': 'POST'
 					},
 					{
-						"href": "https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/applications/portfolio/opt-out",
-						"name": "opt-out",
-						"method": "POST",
-						"fields": [{ name: "opt-out-state", value: [
+						'href': 'https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/applications/portfolio/opt-out',
+						'name': 'opt-out',
+						'method': 'POST',
+						'fields': [{ name: 'opt-out-state', value: [
 							{ name: 'temporary', value: 'temporary' },
 							{ name: 'permanent', value: 'permanent' },
 							{ name: 'opt-in', value: null },
 						]}]
 					}
 				],
-				"links": [
+				'links': [
 					{
-						"rel": [
-							"self"
+						'rel': [
+							'self'
 						],
-						"href": "https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/applications/portfolio/portfolio-instructor-approval"
+						'href': 'https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/applications/portfolio/portfolio-instructor-approval'
 					}
 				]
 			},
 			'https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/applications/portfolio/opt-out': {}
 		};
-		window.fetch = (href, opts) => {
+		window.fetch = (href) => {
 			if (!requests[href]) {
 				throw new Error('Href not found in demo network requests json', href);
 			}
@@ -145,17 +145,17 @@
 				status: 200,
 				json: () => requests[href],
 			});
-		}
+		};
 	</script>
-	<d2l-demo-page page-title="d2l-labs-user-feedback-scale">
+	<d2l-demo-page page-title='d2l-labs-user-feedback-scale'>
 		<h2>d2l-labs-user-feedback-scale</h2>
 		<d2l-demo-snippet>
 			<d2l-labs-user-feedback-scale>
-				<d2l-labs-user-feedback-scale-item value="1">Bad</d2l-labs-user-feedback-scale-item>
-				<d2l-labs-user-feedback-scale-item value="2">Okay</d2l-labs-user-feedback-scale-item>
-				<d2l-labs-user-feedback-scale-item value="3">Alright</d2l-labs-user-feedback-scale-item>
-				<d2l-labs-user-feedback-scale-item value="4">Good job this is a good thing and it seems pretty good</d2l-labs-user-feedback-scale-item>
-				<d2l-labs-user-feedback-scale-item value="5">Great job I always knew you had it in you</d2l-labs-user-feedback-scale-item>
+				<d2l-labs-user-feedback-scale-item value='1'>Bad</d2l-labs-user-feedback-scale-item>
+				<d2l-labs-user-feedback-scale-item value='2'>Okay</d2l-labs-user-feedback-scale-item>
+				<d2l-labs-user-feedback-scale-item value='3'>Alright</d2l-labs-user-feedback-scale-item>
+				<d2l-labs-user-feedback-scale-item value='4'>Good job this is a good thing and it seems pretty good</d2l-labs-user-feedback-scale-item>
+				<d2l-labs-user-feedback-scale-item value='5'>Great job I always knew you had it in you</d2l-labs-user-feedback-scale-item>
 			</d2l-labs-user-feedback-scale>
 		</d2l-demo-snippet>
 
@@ -163,34 +163,34 @@
 		<d2l-demo-snippet>
 			See the button fixed to the bottom of the screen
 			<d2l-labs-user-feedback-flyout
-				style="position: fixed; bottom: 0; left: 0; z-index: 19;"
-				button-text="launch the d2l-user-flyout-demo"
+				style='position: fixed; bottom: 0; left: 0; z-index: 19;'
+				button-text='launch the d2l-user-flyout-demo'
 			>
 				<d2l-labs-user-feedback-container
-					prompt="Container Prompt"
-					feedback-version="1"
-					feedback-application="portfolio"
-					feedback-type="portfolio-instructor-approval"
-					feedback-href="https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/"
-					token="This,AToken"
+					prompt='Container Prompt'
+					feedback-version='1'
+					feedback-application='portfolio'
+					feedback-type='portfolio-instructor-approval'
+					feedback-href='https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/'
+					token='This,AToken'
 				>
-					<d2l-labs-user-feedback-text-input defaultlabeltext="Type something here">
-						<d2l-labs-user-feedback-scale prompt="How do you like using our product?">
-							<d2l-labs-user-feedback-scale-item value="1" selectedtextprompt="Why do you hate it?">
+					<d2l-labs-user-feedback-text-input defaultlabeltext='Type something here'>
+						<d2l-labs-user-feedback-scale prompt='How do you like using our product?'>
+							<d2l-labs-user-feedback-scale-item value='1' selectedtextprompt='Why do you hate it?'>
 								I hate it
 							</d2l-labs-user-feedback-scale-item>
-							<d2l-labs-user-feedback-scale-item value="2" selectedtextprompt="Why don't you like it?">
+							<d2l-labs-user-feedback-scale-item value='2' selectedtextprompt="Why don't you like it?">
 								I don't like it
 							</d2l-labs-user-feedback-scale-item>
-							<d2l-labs-user-feedback-scale-item value="3"
-								selectedtextprompt="What could we do to make the experience better?">
+							<d2l-labs-user-feedback-scale-item value='3'
+								selectedtextprompt='What could we do to make the experience better?'>
 								It's alright
 							</d2l-labs-user-feedback-scale-item>
-							<d2l-labs-user-feedback-scale-item value="4" selectedtextprompt="Why do you like it?">
+							<d2l-labs-user-feedback-scale-item value='4' selectedtextprompt='Why do you like it?'>
 								It's good
 							</d2l-labs-user-feedback-scale-item>
-							<d2l-labs-user-feedback-scale-item value="5"
-								selectedtextprompt="Is that a good thing? Please elaborate.">
+							<d2l-labs-user-feedback-scale-item value='5'
+								selectedtextprompt='Is that a good thing? Please elaborate.'>
 								It's better than french toast
 							</d2l-labs-user-feedback-scale-item>
 						</d2l-labs-user-feedback-scale>
