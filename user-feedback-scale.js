@@ -226,16 +226,13 @@ class UserFeedbackScale extends ArrowKeysMixin(LitElement) {
 	}
 
 	serialize() {
-		const prepend = (text) => {
-			const prefix = this.serializePrefix || '';
-			return `${prefix}${text}`;
-		};
+		const prefix = this.serializePrefix || '';
 
 		return {
-			[prepend('prompt')]: this.prompt,
-			[prepend('scaleValue')]: this.selectedValue,
-			[prepend('scaleOutOfValue')]: this.selectedIndex,
-			[prepend('scaleText')]: this.selectedText,
+			[`${prefix}prompt`]: this.prompt,
+			[`${prefix}scaleValue`]: this.selectedValue,
+			[`${prefix}scaleOutOfValue`]: this.selectedIndex,
+			[`${prefix}scaleText`]: this.selectedText,
 		};
 	}
 
