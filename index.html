@@ -136,15 +136,11 @@
 			'https://99d6c88f-3f9e-45e6-b804-988b1f68e463.feedback.api.dev.brightspace.com/applications/portfolio/opt-out': {}
 		};
 		window.fetch = (href) => {
-			if (!requests[href]) {
-				throw new Error('Href not found in demo network requests json', href);
+			if (!requests[href.url]) {
+				throw new Error('Href not found in demo network requests json', href.url);
 			}
 
-			return Promise.resolve({
-				ok: true,
-				status: 200,
-				json: () => requests[href],
-			});
+			return new Response(JSON.stringify(requests[href.url]), { status: 200 });
 		};
 	</script>
 	<d2l-demo-page page-title='d2l-labs-user-feedback-scale'>

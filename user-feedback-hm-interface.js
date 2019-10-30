@@ -1,4 +1,5 @@
 import { Actions, Classes, Rels } from 'd2l-hypermedia-constants/index';
+import { d2lfetch } from 'd2l-fetch/src/index.js';
 import SirenParse from 'siren-parser';
 const RESPONSE_FREQUENCY_NEVER_RESHOW = -1;
 
@@ -154,17 +155,21 @@ export class HmInterface {
 		if (typeof body === 'object') {
 			body = JSON.stringify(body);
 		}
-		const response = await window.fetch(href, {
+
+		const token = (typeof this.token === 'function') ? await this.token() : this.token;
+
+		const response = d2lfetch.fetch(new Request(href, {
 			method,
 			body: body,
 			headers: {
-				Authorization: this.token
+				Authorization: token
 			}
-		});
+		}));
 		if (!response.ok || !this.isSuccessResponse(response)) {
 			throw new Error(`${href} call was not successful, status: ${response.status}, ok: ${response.ok}`);
 		}
-		const deserializedResponse = SirenParse(await response.json());
+		const responseJSON = await response.json();
+		const deserializedResponse = SirenParse(responseJSON);
 		return deserializedResponse;
 	}
 
