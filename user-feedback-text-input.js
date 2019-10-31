@@ -8,6 +8,7 @@ class UserFeedbackTextInput extends LitElement {
 		return {
 			defaultlabeltext: { type: String },
 			overridelabeltext: { type: String }, // for connecting to the scale element
+			serializePrefix: { type: String },
 			value: { type: String }
 		};
 	}
@@ -54,9 +55,11 @@ class UserFeedbackTextInput extends LitElement {
 	}
 
 	serialize() {
+		const prefix = this.serializePrefix || '';
+
 		const serializedValue = {
-			userInputPrompt: this.overridelabeltext || this.defaultlabeltext,
-			userInput: this.value,
+			[`${prefix}textField`]: this.overridelabeltext || this.defaultlabeltext,
+			[`${prefix}textFieldUserInput`]: this.value,
 		};
 
 		const scale = this._getInnerFeedbackScale();

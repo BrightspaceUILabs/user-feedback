@@ -1,3 +1,5 @@
+import '@brightspace-ui/core/components/backdrop/backdrop';
+
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import {
 	getFirstFocusableDescendant,
@@ -18,7 +20,8 @@ class UserFeedbackScaleItem extends LitElement {
 			hide: { type: Boolean },
 			hideafterclose: { type: Boolean },
 			stopscroll: { type: Boolean },
-			buttontext: { type: String, attribute: 'button-text' }
+			buttontext: { type: String, attribute: 'button-text' },
+			_restricted: { type: Boolean }
 		};
 	}
 
@@ -30,12 +33,12 @@ class UserFeedbackScaleItem extends LitElement {
 
 			.d2l-labs-user-feedback-flyout-container {
 				width: 100vw;
-				border-top: solid var(--d2l-color-celestine) 2px;
 				bottom: var(--d2l-labs-user-feedback-bottom, 0);
+				border-top: solid transparent 0;
 				background: var(--d2l-color-regolith);
 				display: block;
 				max-height: 0;
-				transition: max-height 0.5s;
+				transition: max-height 0.5s, border-top 0s linear 0.5s;
 				overflow: hidden;
 				--user-feedback-scale-item-bg-spacer-background: var(--d2l-color-regolith);
 				z-index: 1000;
@@ -53,8 +56,10 @@ class UserFeedbackScaleItem extends LitElement {
 			}
 
 			:host([opened]) .d2l-labs-user-feedback-flyout-container {
+				border-top: solid var(--d2l-color-celestine) 2px;
 				height: var(--d2l-labs-user-feedback-flyout-height, auto);
 				max-height: 30rem;
+				transition: max-height 0.5s;
 			}
 
 			.d2l-labs-user-feedback-flyout-content {
@@ -139,6 +144,7 @@ class UserFeedbackScaleItem extends LitElement {
 	constructor() {
 		super();
 		this.opened = false;
+		this._restricted = true;
 	}
 
 	focus() {
@@ -157,7 +163,7 @@ class UserFeedbackScaleItem extends LitElement {
 		if (this.stopscroll) {
 			document.body.style.overflow = 'hidden';
 		}
-		this.setAttribute('opened');
+		this.setAttribute('opened', '');
 	}
 
 	_toggleOff() {
@@ -230,16 +236,16 @@ class UserFeedbackScaleItem extends LitElement {
 		}
 	}
 
+	_notRestrictedByOptOutOrRecentFeedback() {
+		this._restricted = false;
+	}
+
 	_focusFirst() {
 		getNextFocusable(getFirstFocusableDescendant(this.shadowRoot)).focus();
 	}
 
 	_focusLast() {
 		getPreviousFocusable(getLastFocusableDescendant(this.shadowRoot)).focus();
-	}
-
-	_onShimClick() {
-		this._toggleOff();
 	}
 
 	render() {
@@ -249,7 +255,7 @@ class UserFeedbackScaleItem extends LitElement {
 
 		const direction = this.opened ? 'down' : 'up';
 
-		const button = this.hide ? '' :
+		const button = this.hide || this._restricted ? '' :
 			html`<div class="d2l-labs-user-feedback-flyout-launch-button-container">
 				<button
 					class="d2l-labs-user-feedback-flyout-launch-button d2l-body-compact"
@@ -261,14 +267,17 @@ class UserFeedbackScaleItem extends LitElement {
 			</div>`;
 
 		return html`
-			<div @keydown="${this._onKeyDown}">
+			<div
+				@keydown="${this._onKeyDown}"
+				@d2l-labs-user-feedback-show-button="${this._notRestrictedByOptOutOrRecentFeedback}"
+			>
 				<div
 					class="d2l-labs-user-feedback-flyout-first-focusable"
 					tabindex="0"
 					@focusin="${this._focusLast}"
 				></div>
 				${button}
-				<div class="d2l-labs-user-feedback-flyout-container">
+				<div class="d2l-labs-user-feedback-flyout-container" id="d2l-labs-user-feedback-flyout-container">
 					<div class="d2l-labs-user-feedback-flyout-content"
 						@d2l-labs-user-feedback-container-cancel="${this._onCancel}"
 						@d2l-labs-user-feedback-container-reject="${this._onReject}"
@@ -282,7 +291,7 @@ class UserFeedbackScaleItem extends LitElement {
 						></span>
 					</div>
 				</div>
-				<div class="flyout-shim" @click=${this._onShimClick}></div>
+				<d2l-backdrop ?shown=${this.opened} for-target="d2l-labs-user-feedback-flyout-container"></d2l-backdrop>
 			</div>
 		`;
 	}

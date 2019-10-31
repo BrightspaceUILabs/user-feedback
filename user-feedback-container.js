@@ -1,9 +1,13 @@
 import '@brightspace-ui/core/components/button/button';
 import '@brightspace-ui/core/components/button/button-subtle';
 import '@brightspace-ui/core/components/icons/icon';
+import 'd2l-alert/d2l-alert';
+import 'd2l-loading-spinner/d2l-loading-spinner';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+
 import { getComposedChildren } from '@brightspace-ui/core/helpers/dom';
+import { HmInterface } from './user-feedback-hm-interface.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
 class UserFeedbackContainer extends LocalizeMixin(LitElement) {
@@ -11,8 +15,16 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	static get properties() {
 		return {
 			prompt: { type: String },
+			feedbackVersion: { type: Number, attribute: 'feedback-version' },
+			feedbackApplication: { type: String, attribute: 'feedback-application' },
+			feedbackType: { type: String, attribute: 'feedback-type' },
+			feedbackHref: { type: String, attribute: 'feedback-href' },
 			_buttonDisabled: { type: Boolean },
-			_submitted: { type: Boolean }
+			_submitted: { type: Boolean },
+			_currentState: { type: Object },
+			token: { type: String },
+			optOutType: { type: String, attribute: 'opt-out-type' },
+			additionalFields: { type: Object, attribute: 'additional-fields' }
 		};
 	}
 
@@ -39,6 +51,13 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 				display: flex;
 				align-items: center;
 				flex-direction: column;
+			}
+
+			.user-feedback-submitting-container {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				--d2l-loading-spinner-size: 5rem;
 			}
 
 			.user-feedback-submitted-icon {
@@ -73,7 +92,7 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 				'cancel': 'Cancel',
 				'close': 'Close',
 				'submittedTitle': 'Thank You!',
-				'submittedText': 'You can also share ideas that would make our product even better on our Product Idea Exchange'
+				'errorSubmitting': 'There was an error submitting your feedback, please try again later',
 			}
 		};
 
@@ -92,6 +111,38 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	constructor() {
 		super();
 		this._updateButtonDisabled();
+		this._currentState = this.states.enteringFeedback;
+		this.optOutType = 'permanent';
+		this.additionalFields = {};
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+
+		this.hmInterface = new HmInterface({
+			feedbackApplication: this.feedbackApplication,
+			feedbackType: this.feedbackType,
+			feedbackDomainRoot: this.feedbackHref,
+			token: this.token,
+			optOutType: this.optOutType
+		});
+		this.showButtonAfterShouldShowCheck();
+	}
+
+	async showButtonAfterShouldShowCheck() {
+		const result = await this.hmInterface.shouldShow();
+		if (result === true) {
+			this.dispatchEvent(new CustomEvent('d2l-labs-user-feedback-show-button', { bubbles: true, composed: true }));
+		}
+	}
+
+	get states() {
+		return {
+			enteringFeedback: { name: 'enteringFeedback', render: this._renderFeedbackView.bind(this) },
+			submitting: { name: 'submitting', render: this._renderFeedbackSubmittingView.bind(this) },
+			errorSubmitting: { name: 'errorSubmitting', render: this._renderErrorSubmittingView.bind(this) },
+			submitted: { name: 'submitted', render: this._renderFeedbackSubmittedView.bind(this) }
+		};
 	}
 
 	_isFeedbackComponent(tag) {
@@ -114,22 +165,39 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 		this._getInnerFeedbackComponents().forEach(x => x.clear && x.clear());
 	}
 
-	_onSubmit() {
-		this._craftResponseObject();
+	async _onSubmit() {
+		this._currentState = this.states.submitting;
+
+		try {
+			await this.hmInterface.sendFeedback(this.responseObject);
+		} catch (e) {
+			console.error(e);
+			this._currentState = this.states.errorSubmitting;
+		}
+
 		this._dispatchSubmitEvent();
-		this._submitted = true;
+		this._currentState = this.states.submitted;
 	}
 
 	_onCancel() {
 		this._dispatchCancelEvent();
 	}
 
-	_onReject() {
+	async _onReject() {
 		this._dispatchRejectEvent();
+		await this.hmInterface.optOut();
 	}
 
-	_craftResponseObject() {
-		console.log(this._getInnerFeedbackComponents().map(x => x.serialize()));
+	get responseObject() {
+		let result =
+			this._getInnerFeedbackComponents()
+				.map(x => x.serialize())
+				.reduce((prev, cur) => Object.assign(prev, cur));
+
+		const additionalFields  = this.additionalFields || {};
+		result = Object.assign({ feedbackVersion: this.feedbackVersion || 1 }, additionalFields, result);
+
+		return result;
 	}
 
 	_dispatchSubmitEvent() {
@@ -144,11 +212,48 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-feedback-container-reject', { bubbles: true, composed: true }));
 	}
 
+	_renderFeedbackSubmittingView() {
+		return html`<div class="user-feedback-submitting-container">
+			<d2l-loading-spinner></d2l-loading-spinner>
+		</div>`;
+	}
+
+	_renderErrorSubmittingView() {
+		return html`<div class="user-feedback-error-submitting-container">
+			<d2l-alert type="error">
+				${this.localize('errorSubmitting')}
+			</d2l-alert>
+
+			<div class="user-feedback-container-buttons">
+				<d2l-button
+					primary
+					@click="${this._onCancel}"
+				>
+					${this.localize('close')}
+				</d2l-button>
+			</div>
+		</div>`;
+	}
+
+	_renderPIESuggestionForEnglishOnly() {
+		// PIE is in English only so don't translate it
+		if (this.__language && this.__language.indexOf('en') === 0) {
+			return html`
+			<div class="user-feedback-submitted-text">
+				You can also share ideas that would make our product even better on our
+				<a href="https://community.brightspace.com/s/article/Product-Idea-Exchange-Overview" target="_top">
+					Product Idea Exchange
+				</a>
+			</div>`;
+		}
+		return '';
+	}
+
 	_renderFeedbackSubmittedView() {
 		return html`<div class="user-feedback-submitted-container">
 			<d2l-icon class="user-feedback-submitted-icon" icon="tier3:check-circle"></d2l-icon>
 			<h1 class="user-feedback-submitted-title">${this.localize('submittedTitle')}</h1>
-			<div class="user-feedback-submitted-text">${this.localize('submittedText')}</div>
+			${this._renderPIESuggestionForEnglishOnly()}
 			<div class="user-feedback-container-buttons">
 				<d2l-button
 					primary
@@ -194,7 +299,7 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	}
 
 	render() {
-		return this._submitted ? this._renderFeedbackSubmittedView() : this._renderFeedbackView();
+		return this._currentState.render();
 	}
 }
 customElements.define('d2l-labs-user-feedback-container', UserFeedbackContainer);
