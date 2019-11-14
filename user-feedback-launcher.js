@@ -1,6 +1,7 @@
 import '@brightspace-ui/core/components/dialog/dialog';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { langResources } from './lang';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
 class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
@@ -62,12 +63,6 @@ class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
 	}
 
 	static async getLocalizeResources(langs) {
-		const langResources = {
-			'en': {
-				'defaultTitle': 'Send us Product Feedback'
-			}
-		};
-
 		for (let i = 0; i < langs.length; i++) {
 			if (langResources[langs[i]]) {
 				return {

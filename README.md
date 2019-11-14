@@ -28,6 +28,14 @@ To install from NPM:
 npm install @brightspace-ui-labs/user-feedback
 ```
 
+## Localization
+
+This repo uses [Serge](https://docs.dev.d2l/index.php/Serge-Localize) for localization. On any changes to langterm data files (eg. due to adding new lang terms, or merging an automated PR that provides updated translations), you must run
+```
+npm run localize
+```
+to generate new modules with the updated data.
+
 ## Usage
 
 ### d2l-labs-user-feedback-container
