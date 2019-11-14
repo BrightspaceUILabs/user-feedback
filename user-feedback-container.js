@@ -8,6 +8,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 
 import { getComposedChildren } from '@brightspace-ui/core/helpers/dom';
 import { HmInterface } from './user-feedback-hm-interface.js';
+import { langResources } from './lang';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
 class UserFeedbackContainer extends LocalizeMixin(LitElement) {
@@ -85,17 +86,6 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 	}
 
 	static async getLocalizeResources(langs) {
-		const langResources = {
-			'en': {
-				'sendFeedback': 'Send Feedback',
-				'dontWantToGiveFeedback': "I don't want to give feedback",
-				'cancel': 'Cancel',
-				'close': 'Close',
-				'submittedTitle': 'Thank You!',
-				'errorSubmitting': 'There was an error submitting your feedback, please try again later',
-			}
-		};
-
 		for (let i = 0; i < langs.length; i++) {
 			if (langResources[langs[i]]) {
 				return {
