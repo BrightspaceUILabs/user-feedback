@@ -19,7 +19,7 @@ const config = {
 		data: {
 			lang,
 			properLang: changeCase.camel(lang),
-			resources: JSON.stringify(localeResources[lang], null, '\t'),
+			resources: JSON.stringify(Object.assign({}, localeResources['en'], localeResources[lang]), null, '\t'),
 		},
 	}))
 };
