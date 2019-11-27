@@ -12,7 +12,8 @@
     "user-feedback-scale-item.js",
     "user-feedback-scale.js",
     "user-feedback-text-input.js",
-    "user-feedback-hm-interface.js"
+    "user-feedback-hm-interface.js",
+    "lang"
   ],
   "scripts": {
     "lint": "eslint . --ext .js,.html",
