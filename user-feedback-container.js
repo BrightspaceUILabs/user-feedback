@@ -153,6 +153,7 @@ class UserFeedbackContainer extends LocalizeMixin(LitElement) {
 
 	clear() {
 		this._getInnerFeedbackComponents().forEach(x => x.clear && x.clear());
+		this._updateButtonDisabled();
 	}
 
 	async _onSubmit() {
