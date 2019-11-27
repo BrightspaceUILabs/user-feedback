@@ -32,7 +32,6 @@ class UserFeedbackTextInput extends LitElement {
 	}
 
 	_onScaleChange(e) {
-		this.value = e.target.value;
 		if (e.detail.selectedtextprompt) {
 			this.overridelabeltext = e.detail.selectedtextprompt;
 		}
