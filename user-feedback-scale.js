@@ -230,7 +230,7 @@ class UserFeedbackScale extends ArrowKeysMixin(LitElement) {
 
 		return {
 			[`${prefix}prompt`]: this.prompt,
-			[`${prefix}scaleValue`]: this.selectedIndex + 1,
+			[`${prefix}scaleValue`]: !(this.selectedIndex || this.selectedIndex === 0) ? 0 : this.selectedIndex + 1,
 			[`${prefix}scaleOutOfValue`]: this._buttons.length,
 			[`${prefix}scaleText`]: this.selectedText,
 		};
