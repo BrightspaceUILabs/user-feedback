@@ -1,2 +1,9 @@
 {
+   "cancel" : "Abbrechen",
+   "close" : "Schließen",
+   "defaultTitle" : "Feedback geben",
+   "dontWantToGiveFeedback" : "Ich möchte kein Feedback geben",
+   "errorSubmitting" : "Beim Senden Ihres Feedbacks ist ein Fehler aufgetreten. Versuchen Sie es später erneut",
+   "sendFeedback" : "Feedback senden",
+   "submittedTitle" : "Vielen Dank!"
 }

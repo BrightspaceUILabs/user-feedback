@@ -1,2 +1,9 @@
 {
+   "cancel" : "إلغاء",
+   "close" : "إغلاق",
+   "defaultTitle" : "إرسال ملاحظاتك حول المنتج",
+   "dontWantToGiveFeedback" : "لا أريد تقديم ملاحظات",
+   "errorSubmitting" : "حدث خطأ أثناء إرسال ملاحظاتك، يُرجى المحاولة مرة أخرى لاحقًا",
+   "sendFeedback" : "إرسال الملاحظات",
+   "submittedTitle" : "شكرًا!"
 }

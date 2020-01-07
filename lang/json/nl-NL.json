@@ -1,2 +1,9 @@
 {
+   "cancel" : "Annuleren",
+   "close" : "Sluiten",
+   "defaultTitle" : "Stuur ons uw feedback",
+   "dontWantToGiveFeedback" : "Ik wil geen feedback geven",
+   "errorSubmitting" : "Er is een fout opgetreden bij het verzenden van uw feedback. Probeer het later opnieuw",
+   "sendFeedback" : "Feedback verzenden",
+   "submittedTitle" : "Bedankt!"
 }

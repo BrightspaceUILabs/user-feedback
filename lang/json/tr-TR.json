@@ -1,2 +1,9 @@
 {
+   "cancel" : "İptal",
+   "close" : "Kapat",
+   "defaultTitle" : "Bize Ürün Geri Bildirimi Gönderin",
+   "dontWantToGiveFeedback" : "Geri bildirim vermek istemiyorum",
+   "errorSubmitting" : "Geri bildiriminiz gönderilirken bir hata oluştu, lütfen daha sonra tekrar deneyin",
+   "sendFeedback" : "Geri Bildirim Gönder",
+   "submittedTitle" : "Teşekkürler!"
 }

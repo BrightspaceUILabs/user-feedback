@@ -1,2 +1,9 @@
 {
+   "cancel" : "Cancelar",
+   "close" : "Fechar",
+   "defaultTitle" : "Envie-nos comentários sobre o produto",
+   "dontWantToGiveFeedback" : "Não quero fazer comentários",
+   "errorSubmitting" : "Erro ao enviar seus comentários; tente novamente mais tarde",
+   "sendFeedback" : "Enviar Comentários",
+   "submittedTitle" : "Obrigado!"
 }
