@@ -2,11 +2,11 @@
 /* eslint quotes: ["error", "double"] */
 
 export const ptBr = {
-	"sendFeedback": "Send Feedback",
-	"dontWantToGiveFeedback": "I don't want to give feedback",
-	"cancel": "Cancel",
-	"close": "Close",
-	"submittedTitle": "Thank You!",
-	"errorSubmitting": "There was an error submitting your feedback, please try again later",
-	"defaultTitle": "Send us Product Feedback"
+	"sendFeedback": "Enviar Comentários",
+	"dontWantToGiveFeedback": "Não quero fazer comentários",
+	"cancel": "Cancelar",
+	"close": "Fechar",
+	"submittedTitle": "Obrigado!",
+	"errorSubmitting": "Erro ao enviar seus comentários; tente novamente mais tarde",
+	"defaultTitle": "Envie-nos comentários sobre o produto"
 };

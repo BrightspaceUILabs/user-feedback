@@ -2,11 +2,11 @@
 /* eslint quotes: ["error", "double"] */
 
 export const esMx = {
-	"sendFeedback": "Send Feedback",
-	"dontWantToGiveFeedback": "I don't want to give feedback",
-	"cancel": "Cancel",
-	"close": "Close",
-	"submittedTitle": "Thank You!",
-	"errorSubmitting": "There was an error submitting your feedback, please try again later",
-	"defaultTitle": "Send us Product Feedback"
+	"sendFeedback": "Enviar comentarios",
+	"dontWantToGiveFeedback": "No quiero enviar comentarios",
+	"cancel": "Cancelar",
+	"close": "Cerrar",
+	"submittedTitle": "¡Gracias!",
+	"errorSubmitting": "No se pudieron enviar sus comentarios. Vuelva a intentarlo más tarde.",
+	"defaultTitle": "Envíenos sus comentarios sobre el producto"
 };

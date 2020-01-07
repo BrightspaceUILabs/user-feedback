@@ -2,11 +2,11 @@
 /* eslint quotes: ["error", "double"] */
 
 export const jaJp = {
-	"sendFeedback": "Send Feedback",
-	"dontWantToGiveFeedback": "I don't want to give feedback",
-	"cancel": "Cancel",
-	"close": "Close",
-	"submittedTitle": "Thank You!",
-	"errorSubmitting": "There was an error submitting your feedback, please try again later",
-	"defaultTitle": "Send us Product Feedback"
+	"sendFeedback": "フィードバックの送信",
+	"dontWantToGiveFeedback": "フィードバックを提供したくない",
+	"cancel": "キャンセル",
+	"close": "閉じる",
+	"submittedTitle": "ありがとうございます。",
+	"errorSubmitting": "フィードバックの送信中にエラーが発生しました。後でもう一度試してください",
+	"defaultTitle": "製品フィードバックの送信"
 };

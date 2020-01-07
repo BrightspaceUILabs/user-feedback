@@ -2,11 +2,11 @@
 /* eslint quotes: ["error", "double"] */
 
 export const arSa = {
-	"sendFeedback": "Send Feedback",
-	"dontWantToGiveFeedback": "I don't want to give feedback",
-	"cancel": "Cancel",
-	"close": "Close",
-	"submittedTitle": "Thank You!",
-	"errorSubmitting": "There was an error submitting your feedback, please try again later",
-	"defaultTitle": "Send us Product Feedback"
+	"sendFeedback": "إرسال الملاحظات",
+	"dontWantToGiveFeedback": "لا أريد تقديم ملاحظات",
+	"cancel": "إلغاء",
+	"close": "إغلاق",
+	"submittedTitle": "شكرًا!",
+	"errorSubmitting": "حدث خطأ أثناء إرسال ملاحظاتك، يُرجى المحاولة مرة أخرى لاحقًا",
+	"defaultTitle": "إرسال ملاحظاتك حول المنتج"
 };

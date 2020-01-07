@@ -2,11 +2,11 @@
 /* eslint quotes: ["error", "double"] */
 
 export const frCa = {
-	"sendFeedback": "Send Feedback",
-	"dontWantToGiveFeedback": "I don't want to give feedback",
-	"cancel": "Cancel",
-	"close": "Close",
-	"submittedTitle": "Thank You!",
-	"errorSubmitting": "There was an error submitting your feedback, please try again later",
-	"defaultTitle": "Send us Product Feedback"
+	"sendFeedback": "Transmettre le commentaire",
+	"dontWantToGiveFeedback": "Je ne veux pas transmettre de commentaire",
+	"cancel": "Annuler",
+	"close": "Fermer",
+	"submittedTitle": "Merci!",
+	"errorSubmitting": "Une erreur est survenue lors de la soumission de votre commentaire. Veuillez réessayer plus tard.",
+	"defaultTitle": "Envoyez-nous vos commentaires sur le produit"
 };

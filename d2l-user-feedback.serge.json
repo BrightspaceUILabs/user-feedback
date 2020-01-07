@@ -1,5 +1,0 @@
-{
-    "name": "D2L User Feedback",
-    "source_dir": "lang/json",
-    "output_file_path": "lang/json/%CULTURE%.json"
-}

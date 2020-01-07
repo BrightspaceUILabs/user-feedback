@@ -2,11 +2,11 @@
 /* eslint quotes: ["error", "double"] */
 
 export const nlNl = {
-	"sendFeedback": "Send Feedback",
-	"dontWantToGiveFeedback": "I don't want to give feedback",
-	"cancel": "Cancel",
-	"close": "Close",
-	"submittedTitle": "Thank You!",
-	"errorSubmitting": "There was an error submitting your feedback, please try again later",
-	"defaultTitle": "Send us Product Feedback"
+	"sendFeedback": "Feedback verzenden",
+	"dontWantToGiveFeedback": "Ik wil geen feedback geven",
+	"cancel": "Annuleren",
+	"close": "Sluiten",
+	"submittedTitle": "Bedankt!",
+	"errorSubmitting": "Er is een fout opgetreden bij het verzenden van uw feedback. Probeer het later opnieuw",
+	"defaultTitle": "Stuur ons uw feedback"
 };

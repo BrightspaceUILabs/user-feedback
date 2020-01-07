@@ -2,11 +2,11 @@
 /* eslint quotes: ["error", "double"] */
 
 export const trTr = {
-	"sendFeedback": "Send Feedback",
-	"dontWantToGiveFeedback": "I don't want to give feedback",
-	"cancel": "Cancel",
-	"close": "Close",
-	"submittedTitle": "Thank You!",
-	"errorSubmitting": "There was an error submitting your feedback, please try again later",
-	"defaultTitle": "Send us Product Feedback"
+	"sendFeedback": "Geri Bildirim Gönder",
+	"dontWantToGiveFeedback": "Geri bildirim vermek istemiyorum",
+	"cancel": "İptal",
+	"close": "Kapat",
+	"submittedTitle": "Teşekkürler!",
+	"errorSubmitting": "Geri bildiriminiz gönderilirken bir hata oluştu, lütfen daha sonra tekrar deneyin",
+	"defaultTitle": "Bize Ürün Geri Bildirimi Gönderin"
 };

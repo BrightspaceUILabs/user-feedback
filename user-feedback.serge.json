@@ -1,0 +1,5 @@
+{
+    "name": "user-feedback",
+    "source_dir": "lang/json",
+    "output_file_path": "lang/json/%CULTURE%.json"
+}

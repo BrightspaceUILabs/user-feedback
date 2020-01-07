@@ -2,11 +2,11 @@
 /* eslint quotes: ["error", "double"] */
 
 export const svSe = {
-	"sendFeedback": "Send Feedback",
-	"dontWantToGiveFeedback": "I don't want to give feedback",
-	"cancel": "Cancel",
-	"close": "Close",
-	"submittedTitle": "Thank You!",
-	"errorSubmitting": "There was an error submitting your feedback, please try again later",
-	"defaultTitle": "Send us Product Feedback"
+	"sendFeedback": "Skicka feedback",
+	"dontWantToGiveFeedback": "Jag vill inte ge någon feedback",
+	"cancel": "Avbryt",
+	"close": "Stäng",
+	"submittedTitle": "Tack!",
+	"errorSubmitting": "Det uppstod ett fel när din feedback skulle lämnas in. Försök igen senare",
+	"defaultTitle": "Skicka produktfeedback till oss"
 };
