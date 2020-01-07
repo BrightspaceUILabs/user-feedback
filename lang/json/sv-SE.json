@@ -1,2 +1,9 @@
 {
+   "cancel" : "Avbryt",
+   "close" : "Stäng",
+   "defaultTitle" : "Skicka produktfeedback till oss",
+   "dontWantToGiveFeedback" : "Jag vill inte ge någon feedback",
+   "errorSubmitting" : "Det uppstod ett fel när din feedback skulle lämnas in. Försök igen senare",
+   "sendFeedback" : "Skicka feedback",
+   "submittedTitle" : "Tack!"
 }

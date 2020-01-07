@@ -1,2 +1,9 @@
 {
+   "cancel" : "取消",
+   "close" : "关闭",
+   "defaultTitle" : "向我们发送产品反馈",
+   "dontWantToGiveFeedback" : "我不想提供反馈",
+   "errorSubmitting" : "提交反馈时出错，请稍后重试",
+   "sendFeedback" : "发送反馈",
+   "submittedTitle" : "谢谢！"
 }

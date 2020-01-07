@@ -1,2 +1,9 @@
 {
+   "cancel" : "キャンセル",
+   "close" : "閉じる",
+   "defaultTitle" : "製品フィードバックの送信",
+   "dontWantToGiveFeedback" : "フィードバックを提供したくない",
+   "errorSubmitting" : "フィードバックの送信中にエラーが発生しました。後でもう一度試してください",
+   "sendFeedback" : "フィードバックの送信",
+   "submittedTitle" : "ありがとうございます。"
 }
