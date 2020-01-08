@@ -37,7 +37,7 @@
     "eslint-plugin-html": "^6",
     "eslint-plugin-lit": "^1",
     "eslint-plugin-sort-class-members": "^1",
-    "frau-ci": "^1",
+    "frau-ci": "^1.41.0",
     "gulp": "^4.0.2",
     "gulp-ejs": "^4.1.2",
     "gulp-rename": "^1.4.0",
