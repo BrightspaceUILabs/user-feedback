@@ -9,8 +9,8 @@ class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
-			prompt: { type: String },
-			dialogtitle: { type: String },
+			dialogTitle: { type: String, attribute: 'dialog-title' },
+			buttonText: { type: String, attribute: 'button-text' },
 			hide: { type: Boolean, value: false },
 			_restricted: { type: Boolean },
 		};
@@ -115,14 +115,14 @@ class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
 				class="feedback-launcher"
 				primary
 			>
-				<slot></slot>
+				${this.buttonText}
 			</d2l-button>`;
 
 		return html`
 			${button}
 			<d2l-dialog
 				width="700"
-				title-text="${this.dialogtitle || this.localize('defaultTitle')}"
+				title-text="${this.dialogTitle || this.localize('defaultTitle')}"
 				@d2l-labs-user-feedback-container-cancel="${this._onCancel}"
 				@d2l-labs-user-feedback-container-reject="${this._onReject}"
 				@d2l-labs-user-feedback-container-submit="${this._onSubmit}"
