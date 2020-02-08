@@ -1,6 +1,7 @@
+import '@brightspace-ui/core/components/button/button';
 import '@brightspace-ui/core/components/dialog/dialog';
-
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import { getComposedChildren } from '@brightspace-ui/core/helpers/dom';
 import { langResources } from './lang';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
@@ -10,7 +11,8 @@ class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
 		return {
 			prompt: { type: String },
 			dialogtitle: { type: String },
-			hide: { type: Boolean, value: false }
+			hide: { type: Boolean, value: false },
+			_restricted: { type: Boolean },
 		};
 	}
 
@@ -24,40 +26,10 @@ class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
 				position: relative;
 			}
 
-			.feedback-launcher {
-				width: 10rem;
-				min-height: 3rem;
-				color: #FFF;
-				background-color: var(--d2l-color-celestine);
-				padding: 0.5rem 1rem;
-				cursor: pointer;
-				border: none;
-				border-radius: 1rem;
-			}
-
-			:host([type=bottom]) .feedback-launcher {
-				border-top-left-radius: 12px;
-				border-top-right-radius: 12px;
-				border-bottom-left-radius: 0;
-				border-bottom-right-radius: 0;
-			}
-
-			:host([type=top]) .feedback-launcher {
-				border-bottom-left-radius: 12px;
-				border-bottom-right-radius: 12px;
-				border-top-left-radius: 0;
-				border-top-right-radius: 0;
-			}
-
 			d2l-dialog {
 				max-width: 100%;
 				width: 30rem;
 				position: absolute;
-			}
-
-			.feedback-launcher:hover,
-			.feedback-launcher:focus {
-				background-color: var(--d2l-color-celestine-minus-1);
 			}
 		`;
 	}
@@ -75,6 +47,11 @@ class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
 		return null;
 	}
 
+	constructor() {
+		super();
+		this._restricted = true;
+	}
+
 	_toggleDialog(toggle) {
 		const dialog = this.shadowRoot.querySelector('d2l-dialog');
 		if (dialog) {
@@ -88,6 +65,7 @@ class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
 
 	_onCancel() {
 		this._toggleDialog(false);
+		this._clear();
 	}
 
 	_onReject() {
@@ -99,11 +77,46 @@ class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
 		this.hide = true;
 	}
 
+	_filterFeedbackContainer(childrenArray) {
+		const container = (childrenArray.filter(tag => {
+			return tag.nodeName === 'D2L-LABS-USER-FEEDBACK-CONTAINER';
+		}) || [])[0];
+		return container;
+	}
+
+	_getChildrenFromSlot(elem) {
+		if (!elem) { return []; }
+		return getComposedChildren(elem.querySelector('d2l-dialog slot'));
+	}
+
+	_clear() {
+		const childrenArray = this._getChildrenFromSlot(this.shadowRoot);
+		let container = this._filterFeedbackContainer(childrenArray);
+
+		if (!container) {
+			const toCheckForNested = childrenArray[0];
+			const nestedChildrenArray = getComposedChildren(toCheckForNested);
+			container = this._filterFeedbackContainer(nestedChildrenArray);
+		}
+
+		if (container && container.clear) {
+			container.clear();
+		}
+	}
+
+	_notRestrictedByOptOutOrRecentFeedback() {
+		this._restricted = false;
+	}
+
 	render() {
-		const button = this.hide ? '' : html`
-			<button @click="${this._onClick}" class="feedback-launcher">
+		const button = this.hide || this._restricted ? '' : html`
+			<d2l-button
+				@click="${this._onClick}"
+				class="feedback-launcher"
+				primary
+			>
 				<slot></slot>
-			</button>`;
+			</d2l-button>`;
 
 		return html`
 			${button}
@@ -113,6 +126,7 @@ class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
 				@d2l-labs-user-feedback-container-cancel="${this._onCancel}"
 				@d2l-labs-user-feedback-container-reject="${this._onReject}"
 				@d2l-labs-user-feedback-container-submit="${this._onSubmit}"
+				@d2l-labs-user-feedback-show-button="${this._notRestrictedByOptOutOrRecentFeedback}"
 			>
 				<slot name="dialog-content"></slot>
 			</d2l-dialog>
