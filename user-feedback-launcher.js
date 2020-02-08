@@ -12,7 +12,7 @@ class UserFeedbackLauncher extends LocalizeMixin(LitElement) {
 			dialogTitle: { type: String, attribute: 'dialog-title' },
 			buttonText: { type: String, attribute: 'button-text' },
 			hide: { type: Boolean, value: false },
-			_restricted: { type: Boolean },
+			_restricted: { type: Boolean, attribute: false },
 		};
 	}
 

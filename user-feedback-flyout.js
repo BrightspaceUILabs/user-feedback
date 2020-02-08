@@ -21,7 +21,7 @@ class UserFeedbackScaleItem extends LitElement {
 			hideafterclose: { type: Boolean },
 			stopscroll: { type: Boolean },
 			buttontext: { type: String, attribute: 'button-text' },
-			_restricted: { type: Boolean }
+			_restricted: { type: Boolean, attribute: false }
 		};
 	}
 
