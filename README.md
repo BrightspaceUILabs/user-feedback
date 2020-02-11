@@ -117,19 +117,27 @@ A component for placing your feedback items in a flyout tray that opens from the
 
 ```html
 <d2l-labs-user-feedback-flyout button-text="launch the feedback component">
-	<!-- slot in the container -->
+	<!-- slotted d2l-labs-user-feedback-container -->
 </d2l-labs-user-feedback-flyout>
 ```
 
 #### Attributes
 - `button-text`: the text that you want to place on the button
 
+### d2l-labs-user-feedback-launcher
+A component for placing your feedback items in a d2l-dialog that opens when the user clicks the button. Will only appear after the container loads the hypermedia entities for submitting to the api, after the user has submitted feedback and closed the dialog, it disappears
+
 ```html
-<d2l-labs-user-feedback-flyout
-	button-text="launch the feedback component">
+<d2l-labs-user-feedback-launcher
+	button-text="launch the feedback component"
+>
 	<!-- slotted d2l-labs-user-feedback-container -->
-</d2l-labs-user-feedback-flyout>
+</d2l-labs-user-feedback-launcher>
 ```
+
+#### Attributes
+- `button-text`: the text that you want to place on the button
+- `dialog-title`: set this to override the default dialog title
 
 ## Developing, Testing and Contributing
 
