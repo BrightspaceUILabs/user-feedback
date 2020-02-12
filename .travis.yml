@@ -20,11 +20,11 @@ env:
   - REPO_NAME=user-feedback
   - OWNER_NAME=BrightspaceUILabs
 deploy:
-  - provider: npm
-    email: d2ltravisdeploy@d2l.com
-    skip_cleanup: true
-    api_key:
-      # d2l-travis-deploy: ...
-    on:
-      tags: true
-      repo: BrightspaceUILabs/user-feedback
+  provider: npm
+  email: d2ltravisdeploy@d2l.com
+  api_key:
+    # e43c......1696
+    secure: IW5iu6N98k366rJtiVKLAJI6X9gxcW9rKpicQVaJe/oMlCKhS8bfPERQjXiM+rHCsyXbZhvDBJ9MHaaFXOz83z7tAkq3NzBwt5QfheX8q0yyKrnwVOUZrD24QhKzqHCySY+EpmiOqhLR2n7V1ARjIIEvZ/CdddkwIuYR8O/xmBzVT+O1kXp7JKlBdaRRnAt62D/TEum/25aAA6I7FLxkgNYPbw5PRcqrCCqY1GumN/Io6HFJWDO5PfB6f4HA+ihyOU6ds6WpcuH7OB3jkZTRMPsCjI+plxtak9EziX5M/COaDiVuyayizENcYUXMw3BT5ga9yjDbfJhoZ6hBBbGX5bRpPFzm79iOoIa6ZSFDQtvQtXrGI2vbheAZ5dxMqTSo52eiQ8+gHgWqxtCQkx8C/J8cxFP8knrQq03wMew8s01c/1gXDO2SpIqLcNaaJMX5BGZ8KtxbAdvpYUejXQnVTIjSRZEYUawe9R1xczcu47F9qUrRNSP9QoSnIf7jRFKUr2zilw2SzUWwRNhiz8zsqXg9QaurIZAYjKlOXI7FZb5O+Kv89IDwcysGBC4j8mt/lhv59tNGsVAjZnstYmF3ZheoOh2P5FcdpSfVkKhrY31ld3NxRV2xri+IPn4XayR69Rhg2/WGnq0cz3EDx4456j6V/WbIsC7UjVE01L0Fmo4=
+  on:
+    tags: true
+    repo: BrightspaceUILabs/user-feedback
