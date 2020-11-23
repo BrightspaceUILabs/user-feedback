@@ -1,8 +1,8 @@
+import '@brightspace-ui/core/components/alert/alert.js';
 import '@brightspace-ui/core/components/button/button';
 import '@brightspace-ui/core/components/button/button-subtle';
 import '@brightspace-ui/core/components/icons/icon';
-import 'd2l-alert/d2l-alert';
-import 'd2l-loading-spinner/d2l-loading-spinner';
+import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 
