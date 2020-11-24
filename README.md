@@ -1,7 +1,6 @@
 # d2l-labs-user-feedback
 
 [![NPM version](https://img.shields.io/npm/v/@brightspace-ui-labs/user-feedback.svg)](https://www.npmjs.org/package/@brightspace-ui-labs/user-feedback)
-![Build status](https://github.com/BrightspaceUILabs/user-feedback/workflows/CI/badge.svg)
 
 > Note: this is a ["labs" component](https://github.com/BrightspaceUI/guide/wiki/Component-Tiers). While functional, these tasks are prerequisites to promotion to BrightspaceUI "official" status:
 >
