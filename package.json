@@ -32,7 +32,7 @@
     "axe-core": "^3",
     "babel-eslint": "^10",
     "chai": "^4",
-    "change-case": "^3.1.0",
+    "change-case": "^4.0.0",
     "eslint": "^6",
     "eslint-config-brightspace": "^0.6",
     "eslint-plugin-html": "^6",
