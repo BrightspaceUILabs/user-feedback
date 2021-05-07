@@ -1,0 +1,9 @@
+{
+   "cancel" : "Annuler",
+   "close" : "Fermer",
+   "defaultTitle" : "Envoyez-nous vos commentaires sur le produit",
+   "dontWantToGiveFeedback" : "Je ne veux pas transmettre de commentaire",
+   "errorSubmitting" : "Une erreur est survenue lors de la soumission de votre commentaire. Veuillez réessayer plus tard.",
+   "sendFeedback" : "Transmettre le commentaire",
+   "submittedTitle" : "Merci!"
+}
